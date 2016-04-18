@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS "blogr";
+CREATE DATABASE "blogr";
