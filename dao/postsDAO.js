@@ -3,7 +3,6 @@ var pg = require('../lib/dbConnection').db;
 function getAll () {
     return pg.query('SELECT * FROM posts')
     .then((results) => {
-        console.log(`SAP! results`, results);
         return results;
     })
     .catch((error) => {
