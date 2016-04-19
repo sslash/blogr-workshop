@@ -30,9 +30,10 @@ app.use((req, res, next) => {
 });
 
 
-// app.get('*', (req, res, next) => {
-//     res.send()
-// });
+app.get('*', (req, res, next) => {
+    console.log('spdap')
+    res.json({hello: 'world'})
+});
 
 // error handlers
 
