@@ -3,3 +3,5 @@
 * npm install
 * cat sql/create_db.sql | psql
 * cat sql/posts.sql | psql -d blogr
+* run the frontend site with `npm run dev:frontend`
+* run the backend server with `npm run dev:server`
