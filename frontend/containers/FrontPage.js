@@ -5,7 +5,7 @@ class Footer extends React.Component{
     render() {
         console.log("##### render Footer");
         return (
-            <div>
+            <div className="container">
                 <hr/>
                 <footer>
                     <p>&copy; 2015 Company, Inc.</p>
@@ -115,7 +115,8 @@ class PostList extends React.Component {
     render () {
         console.log("##### render List");
         return (
-            <div>
+            <div className="container">
+                <a href="#">Posts <span className="badge">{this.state.posts.length}</span></a><br/>
                 {this.state.error}
                 <div className="row">
                     {this.state.posts.map(function(item, i) {
@@ -135,7 +136,7 @@ class FrontPage extends React.Component {
     render () {
         console.log("##### render page");
         return (
-            <div className="container">
+            <div>
                 <Navbar/>
                 <Jumbotron/>
                 <PostList/>
