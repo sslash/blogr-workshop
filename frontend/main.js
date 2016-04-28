@@ -1,9 +1,9 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-import ListPage from './containers/ListPage';
+import FrontPage from './containers/FrontPage';
 
 
 ReactDOM.render(
-    <ListPage />,
+    <FrontPage />,
     document.getElementById('app')
 );
