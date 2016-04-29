@@ -1,9 +1,9 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
-import FrontPage from './components/FrontPage';
+import BlogrApp from './components/BlogrApp.react';
 
 
 ReactDOM.render(
-    <FrontPage />,
+    <BlogrApp />,
     document.getElementById('app')
 );
