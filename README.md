@@ -13,3 +13,4 @@
 * use bootstrap for layout and styling, http://getbootstrap.com/javascript/
 * bootstrap tutorial, http://www.w3schools.com/bootstrap/default.asp
 * use EcmaScript6 features, http://es6-features.org/
+* https://madebymany.com/blog/beyond-the-to-do-app-writing-complex-applications-using-flux-react-js
