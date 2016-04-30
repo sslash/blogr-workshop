@@ -5,7 +5,6 @@ import { loadPostsResponse } from '../actions/PostServerActions';
 export function loadPostsFromServer() {
     req.get('/posts')
     .then((response) => {
-        console.log(response);
         loadPostsResponse(response);
     })
     .catch(() => {

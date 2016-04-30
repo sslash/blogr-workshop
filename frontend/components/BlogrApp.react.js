@@ -27,7 +27,6 @@ export default class BlogrApp extends React.Component {
 
   _onChange() {
     console.log("##### _onChange BlogrApp");
-    console.log(PostStore.getPosts());
     this.setState(PostStore.getPosts());
   }
 

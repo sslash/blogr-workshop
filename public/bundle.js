@@ -141,7 +141,6 @@
 	    key: '_onChange',
 	    value: function _onChange() {
 	      console.log("##### _onChange BlogrApp");
-	      console.log(_PostStore2.default.getPosts());
 	      this.setState(_PostStore2.default.getPosts());
 	    }
 	  }, {
@@ -4067,8 +4066,7 @@
 	    function PostList(props) {
 	        _classCallCheck(this, PostList);
 	
-	        console.log("Constructor");
-	        console.log(props);
+	        console.log("##### constructor PostList");
 	        return _possibleConstructorReturn(this, Object.getPrototypeOf(PostList).call(this, props));
 	    }
 	
@@ -4076,11 +4074,6 @@
 	        key: 'deleteRow',
 	        value: function deleteRow() {
 	            console.log("##### DELETE ROW");
-	        }
-	    }, {
-	        key: 'componentDidMount',
-	        value: function componentDidMount() {
-	            console.log("##### PostList componentDidMount");
 	        }
 	    }, {
 	        key: 'handleClick',
@@ -5362,7 +5355,6 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function clickPost(index) {
-	  console.log("Click Post index:" + index);
 	  _AppDispatcher2.default.handleViewAction({
 	    action: _AppConstants.AppConstants.CLICK_POST,
 	    index: index
@@ -5413,13 +5405,11 @@
 	
 	// Set the selected post.
 	function _setSelectedPost(index) {
-	  console.log("_setSelectedPost: " + index);
 	  _store.post = _store.posts[index];
 	}
 	
 	// Set the selected post.
 	function _setPosts(posts) {
-	  console.log("_setPosts: " + posts);
 	  _store.posts = posts;
 	}
 	
@@ -5445,19 +5435,16 @@
 	  _createClass(PostStoreClass, [{
 	    key: 'addChangeListener',
 	    value: function addChangeListener(cb) {
-	      console.log("addChangeListener");
 	      this.on(CHANGE_EVENT, cb);
 	    }
 	  }, {
 	    key: 'removeChangeListener',
 	    value: function removeChangeListener(cb) {
-	      console.log("removeChangeListener");
 	      this.removeListener(CHANGE_EVENT, cb);
 	    }
 	  }, {
 	    key: 'getPosts',
 	    value: function getPosts() {
-	      console.log("PostStore getPosts (" + _store.posts.length + ")");
 	      return _store;
 	    }
 	  }, {
@@ -5485,8 +5472,7 @@
 	// by changing the store's data and emitting a change
 	_AppDispatcher2.default.register(function (payload) {
 	  var action = payload.action;
-	  console.log("PostStore handle action: " + action.action);
-	  console.log(payload);
+	  console.log("##### PostStore handle action: " + action.action);
 	
 	  switch (action.action) {
 	    case _AppConstants.AppConstants.CLICK_POST:
@@ -23033,7 +23019,6 @@
 	
 	function loadPostsFromServer() {
 	    _axios2.default.get('/posts').then(function (response) {
-	        console.log(response);
 	        (0, _PostServerActions.loadPostsResponse)(response);
 	    }).catch(function () {
 	        console.log("Something went wrong");
@@ -23063,7 +23048,6 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function loadPostsResponse(response) {
-	  console.log("loadPostsResponse");
 	  _AppDispatcher2.default.handleServerAction({
 	    action: _AppConstants.AppConstants.LOAD_POSTS_RESPONSE,
 	    response: response

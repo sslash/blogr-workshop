@@ -6,17 +6,12 @@ import { clickPost } from '../actions/PostActions';
 export default class PostList extends React.Component {
 
     constructor(props) {
-        console.log("Constructor");
-        console.log(props);
+        console.log("##### constructor PostList");
         super(props);
     }
 
     deleteRow()  {
         console.log("##### DELETE ROW");
-    }
-
-    componentDidMount () {
-        console.log("##### PostList componentDidMount");
     }
 
     handleClick(index){
