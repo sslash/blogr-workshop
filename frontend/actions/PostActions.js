@@ -11,7 +11,7 @@ export function clickPost(index) {
 
 export function loadPosts() {
   AppDispatcher.handleViewAction({
-    type: AppConstants.LOAD_POSTS,
+    type: AppConstants.REQUEST_POSTS,
   });
 
   loadPostsFromServer();

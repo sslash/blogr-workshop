@@ -5351,7 +5351,7 @@
 	
 	function loadPosts() {
 	  _AppDispatcher2.default.handleViewAction({
-	    type: _AppConstants.AppConstants.LOAD_POSTS
+	    type: _AppConstants.AppConstants.REQUEST_POSTS
 	  });
 	
 	  (0, _BlogrApi.loadPostsFromServer)();
@@ -5766,9 +5766,11 @@
 	  value: true
 	});
 	var AppConstants = exports.AppConstants = {
+	  REQUEST_POSTS: 'REQUEST_POSTS',
+	  REQUEST_POSTS_SUCCESS: 'REQUEST_POSTS_SUCCESS',
+	  REQUEST_POSTS_FAILURE: 'REQUEST_POSTS_FAILURE',
+	
 	  RESET: 'RESET',
-	  LOAD_POSTS: 'LOAD_POSTS',
-	  LOAD_POSTS_RESPONSE: 'LOAD_POSTS_RESPONSE',
 	  CLICK_POST: 'CLICK_POST'
 	};
 
