@@ -4,27 +4,30 @@ import Navbar from './Navbar.react';
 import Jumbotron from './Jumbotron.react';
 import PostList from './PostList.react';
 import PostStore from '../stores/PostStore';
+import { loadPosts } from '../actions/PostActions';
 
 export default class BlogrApp extends React.Component {
   constructor(props) {
+    console.log("##### constructor BlogrApp");
     super(props);
+
     this._onChange = this._onChange.bind(this);
     this.state = PostStore.getPosts();
-    console.log("##### constructor BlogrApp");
+
+    loadPosts();
   }
 
   componentDidMount() {
-    console.log("##### componentDidMount BlogrApp");
     PostStore.addChangeListener(this._onChange);
   }
 
   componentWillUnmount() {
-    console.log("##### componentWillUnmount BlogrApp");
     PostStore.removeChangeListener(this._onChange);
   }
 
   _onChange() {
     console.log("##### _onChange BlogrApp");
+    console.log(PostStore.getPosts());
     this.setState(PostStore.getPosts());
   }
 

@@ -7,8 +7,14 @@ const CHANGE_EVENT = 'change';
 
 // Set the selected post.
 function _setSelectedPost(index){
-    console.log("_setSelectedPost: "+index)
+    console.log("_setSelectedPost: "+index);
     _store.post = _store.posts[index];
+}
+
+// Set the selected post.
+function _setPosts(posts){
+    console.log("_setPosts: "+posts);
+    _store.posts = posts;
 }
 
 // The data for this store.
@@ -33,7 +39,7 @@ class PostStoreClass extends EventEmitter {
   }
 
   getPosts() {
-    console.log("PostStore getPosts");
+    console.log("PostStore getPosts ("+_store.posts.length+")");
     return _store;
   }
 
@@ -54,13 +60,16 @@ const PostStore = new PostStoreClass();
 // by changing the store's data and emitting a change
 AppDispatcher.register((payload) => {
   const action = payload.action;
-  console.log("PostStore action switch");
+  console.log("PostStore handle action: "+action.action);
+  console.log(payload);
 
   switch (action.action) {
       case AppConstants.CLICK_POST:
-        console.log("PostStore action CLICK_POST: "+action.index);
         _setSelectedPost(action.index);
-
+        PostStore.emit(CHANGE_EVENT);
+        break;
+      case AppConstants.LOAD_POSTS_RESPONSE:
+        _setPosts(action.response.data.data);
         PostStore.emit(CHANGE_EVENT);
         break;
       default:

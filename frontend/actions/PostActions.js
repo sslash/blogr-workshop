@@ -1,5 +1,6 @@
 import AppDispatcher from '../dispatcher/AppDispatcher';
 import { AppConstants } from '../constants/AppConstants';
+import { loadPostsFromServer } from '../stores/BlogrApi';
 
 export function clickPost(index) {
     console.log("Click Post index:"+index)
@@ -7,4 +8,12 @@ export function clickPost(index) {
       action: AppConstants.CLICK_POST,
       index: index
     });
+}
+
+export function loadPosts() {
+  AppDispatcher.handleViewAction({
+    action: AppConstants.LOAD_POSTS,
+  });
+
+  loadPostsFromServer();
 }
