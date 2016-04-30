@@ -1,3 +1,8 @@
+
+Inline-style: 
+![alt text](https://github.com/dniel/blogr-workshop/blob/master/screenshot.png "screenshot")
+
+
 ## get started
 * git clone https://github.com/sslash/blogr-workshop.git
 * cd into blogr-workshop
