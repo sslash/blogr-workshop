@@ -1,4 +1,3 @@
-## This is a screenshot from the webapp.
 ![alt text](https://github.com/dniel/blogr-workshop/blob/master/screenshot.png)
 
 
