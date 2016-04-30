@@ -4093,13 +4093,7 @@
 	        key: 'render',
 	        value: function render() {
 	            console.log("##### render List");
-	
-	            var rows = [];
-	            if (this.props.list) {
-	                this.props.list.map(function (item, index) {
-	                    rows.push(_react2.default.createElement(TodoItem, { key: index, index: index, item: item }));
-	                });
-	            }
+	            console.log(this.props.posts);
 	
 	            return _react2.default.createElement(
 	                'div',

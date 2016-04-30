@@ -32,14 +32,12 @@ export default class PostList extends React.Component {
         return (
             <div className="container">
                 <div className="row">
-                    if(this.props.posts){
-                        {this.props.posts.map(function(item, i) {
-                          var boundClick = this.handleClick.bind(this, i);
-                          return (
-                            <Post onClick={boundClick} key={i} title={item.title} body={item.body} ref={'item' + i} />
-                          );
-                        }, this)}
-                    }
+                    {this.props.posts.map(function(item, i) {
+                      var boundClick = this.handleClick.bind(this, i);
+                      return (
+                        <Post onClick={boundClick} key={i} title={item.title} body={item.body} ref={'item' + i} />
+                      );
+                    }, this)}
                 </div>
             </div>
         )
