@@ -1,0 +1,5 @@
+export const AppConstants = {
+  GET_POSTS: 'GET_POSTS',
+  GET_POSTS_RESPONSE: 'GET_POSTS_RESPONSE',
+  CLICK_POST: 'CLICK_POST'
+};

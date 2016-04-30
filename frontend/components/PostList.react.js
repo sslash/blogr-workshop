@@ -1,8 +1,9 @@
 import React from 'react';
 import req from 'axios';
 import Post from './Post.react';
+import { clickPost } from '../actions/PostActions';
 
-class PostList extends React.Component {
+export default class PostList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -38,6 +39,7 @@ class PostList extends React.Component {
     handleClick(index){
         console.log("##### handleClick ("+index+")");
         var selectedPost = this.state.posts[index];
+        clickPost(index);
     }
 
     render () {
@@ -59,4 +61,6 @@ class PostList extends React.Component {
     }
 }
 
-export default PostList;
+PostList.propTypes = {
+  posts: React.PropTypes.array,
+};
