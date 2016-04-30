@@ -3,7 +3,7 @@ import { AppConstants } from '../constants/AppConstants';
 
 export function loadPostsResponse(response) {
     AppDispatcher.handleServerAction({
-      action: AppConstants.LOAD_POSTS_RESPONSE,
+      type: AppConstants.LOAD_POSTS_RESPONSE,
       response: response
     });
 }

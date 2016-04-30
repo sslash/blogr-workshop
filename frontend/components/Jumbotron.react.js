@@ -2,7 +2,6 @@ import React from 'react';
 
 class Jumbotron extends React.Component{
     render() {
-        console.log("##### render Jumbotron");
         return (
             <div className="jumbotron">
                 <div className="container">

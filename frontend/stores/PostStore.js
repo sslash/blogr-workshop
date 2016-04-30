@@ -55,9 +55,8 @@ const PostStore = new PostStoreClass();
 // by changing the store's data and emitting a change
 AppDispatcher.register((payload) => {
   const action = payload.action;
-  console.log("##### PostStore handle action: "+action.action);
 
-  switch (action.action) {
+  switch (action.type) {
       case AppConstants.CLICK_POST:
         _setSelectedPost(action.index);
         PostStore.emit(CHANGE_EVENT);

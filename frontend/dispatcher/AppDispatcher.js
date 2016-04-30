@@ -1,4 +1,5 @@
 import { Dispatcher } from 'flux';
+import { log } from '../actions/LogActions';
 
 class DispatcherClass extends Dispatcher {
 
@@ -7,6 +8,8 @@ class DispatcherClass extends Dispatcher {
       source: 'VIEW_ACTION',
       action: action,
     });
+
+    log(action);
   }
 
   handleServerAction(action) {
@@ -14,6 +17,8 @@ class DispatcherClass extends Dispatcher {
       source: 'SERVER_ACTION',
       action: action,
     });
+
+    log(action);
   }
 }
 

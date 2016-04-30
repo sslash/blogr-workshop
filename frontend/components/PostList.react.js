@@ -6,21 +6,17 @@ import { clickPost } from '../actions/PostActions';
 export default class PostList extends React.Component {
 
     constructor(props) {
-        console.log("##### constructor PostList");
         super(props);
     }
 
     deleteRow()  {
-        console.log("##### DELETE ROW");
     }
 
     handleClick(index){
-        console.log("##### handleClick ("+index+")");
         clickPost(index);
     }
 
     render () {
-        console.log("##### render List");
         let rows = [];
         if (this.props.posts) {
           this.props.posts.map((item, i) => {

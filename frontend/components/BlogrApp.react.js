@@ -8,7 +8,6 @@ import { loadPosts } from '../actions/PostActions';
 
 export default class BlogrApp extends React.Component {
   constructor(props) {
-    console.log("##### constructor BlogrApp");
     super(props);
 
     this._onChange = this._onChange.bind(this);
@@ -26,12 +25,10 @@ export default class BlogrApp extends React.Component {
   }
 
   _onChange() {
-    console.log("##### _onChange BlogrApp");
     this.setState(PostStore.getPosts());
   }
 
   render () {
-    console.log("##### render BlogrApp");
     return (
         <div>
             <Navbar/>

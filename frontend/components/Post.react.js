@@ -2,7 +2,6 @@ import React from 'react';
 
 class Post extends React.Component {
     render () {
-        console.log("##### render Post");
         return (
             <div className="col-md-4">
                 <h2>{this.props.title}</h2>

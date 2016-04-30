@@ -2,7 +2,6 @@ import React from 'react';
 
 class Footer extends React.Component{
     render() {
-        console.log("##### render Footer");
         return (
             <div className="container">
                 <hr/>
