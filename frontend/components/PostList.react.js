@@ -21,23 +21,22 @@ export default class PostList extends React.Component {
 
     handleClick(index){
         console.log("##### handleClick ("+index+")");
-        var selectedPost = this.state.posts[index];
         clickPost(index);
     }
 
     render () {
         console.log("##### render List");
-        console.log(this.props.posts);
-
+        let rows = [];
+        if (this.props.posts) {
+          this.props.posts.map((item, i) => {
+            var boundClick = this.handleClick.bind(this, i);
+            rows.push(<Post onClick={boundClick} key={i} title={item.title} body={item.body} ref={'item' + i} />);
+          });
+        }
         return (
             <div className="container">
                 <div className="row">
-                    {this.props.posts.map(function(item, i) {
-                      var boundClick = this.handleClick.bind(this, i);
-                      return (
-                        <Post onClick={boundClick} key={i} title={item.title} body={item.body} ref={'item' + i} />
-                      );
-                    }, this)}
+                    {rows}
                 </div>
             </div>
         )

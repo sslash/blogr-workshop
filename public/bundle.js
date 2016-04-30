@@ -4086,25 +4086,28 @@
 	        key: 'handleClick',
 	        value: function handleClick(index) {
 	            console.log("##### handleClick (" + index + ")");
-	            var selectedPost = this.state.posts[index];
 	            (0, _PostActions.clickPost)(index);
 	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            console.log("##### render List");
-	            console.log(this.props.posts);
+	            var _this2 = this;
 	
+	            console.log("##### render List");
+	            var rows = [];
+	            if (this.props.posts) {
+	                this.props.posts.map(function (item, i) {
+	                    var boundClick = _this2.handleClick.bind(_this2, i);
+	                    rows.push(_react2.default.createElement(_Post2.default, { onClick: boundClick, key: i, title: item.title, body: item.body, ref: 'item' + i }));
+	                });
+	            }
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'container' },
 	                _react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
-	                    this.props.posts.map(function (item, i) {
-	                        var boundClick = this.handleClick.bind(this, i);
-	                        return _react2.default.createElement(_Post2.default, { onClick: boundClick, key: i, title: item.title, body: item.body, ref: 'item' + i });
-	                    }, this)
+	                    rows
 	                )
 	            );
 	        }
