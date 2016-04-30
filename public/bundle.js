@@ -5832,7 +5832,7 @@
 	
 	function loadPostsResponse(response) {
 	  _AppDispatcher2.default.handleServerAction({
-	    type: _AppConstants.AppConstants.LOAD_POSTS_RESPONSE,
+	    type: _AppConstants.AppConstants.REQUEST_POSTS_SUCCESS,
 	    response: response
 	  });
 	}
@@ -5946,7 +5946,7 @@
 	      _setSelectedPost(action.index);
 	      PostStore.emit(CHANGE_EVENT);
 	      break;
-	    case _AppConstants.AppConstants.LOAD_POSTS_RESPONSE:
+	    case _AppConstants.AppConstants.REQUEST_POSTS_SUCCESS:
 	      _setPosts(action.response.data.data);
 	      PostStore.emit(CHANGE_EVENT);
 	      break;

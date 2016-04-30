@@ -61,7 +61,7 @@ AppDispatcher.register((payload) => {
         _setSelectedPost(action.index);
         PostStore.emit(CHANGE_EVENT);
         break;
-      case AppConstants.LOAD_POSTS_RESPONSE:
+      case AppConstants.REQUEST_POSTS_SUCCESS:
         _setPosts(action.response.data.data);
         PostStore.emit(CHANGE_EVENT);
         break;
