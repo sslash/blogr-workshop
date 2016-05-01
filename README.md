@@ -8,8 +8,8 @@
 * npm install
 * create the SQL database: run `cat sql/create_db.sql | psql` in the terminal
 * create SQL tables: run `cat sql/posts.sql | psql -d blogr` in the terminal
-* start the backend: `npm run start` in the terminal
-* start the frontend: `npm run dev:frontend` in the terminal
+* start the server, npm run dev:server
+* start the frontend, npm run dev:frontend
 * If you see `Bloggr is running on port 3000 ` and `Postgres is running!` in the terminal the app is up and running and you are ready for the workshop.
 
 ## notes
