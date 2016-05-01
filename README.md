@@ -27,3 +27,4 @@
 * add mock data for frontend running without backend
 * how to do page transitions and navigation
 * better errorhandling, logging of errors to remote api etc.
+* dao operations should use prepared statements and named parameters.
