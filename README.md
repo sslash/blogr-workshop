@@ -19,3 +19,11 @@
 * use EcmaScript6 features, http://es6-features.org/
 * https://madebymany.com/blog/beyond-the-to-do-app-writing-complex-applications-using-flux-react-js
 * testing should be done with mocha and chai
+
+## Todo
+* add a master-detail example implementation.
+* add integration tests
+* add unit tests
+* add mock data for frontend running without backend
+* how to do page transitions and navigation
+* better errorhandling, logging of errors to remote api etc.
