@@ -15,7 +15,9 @@ dbConnection.pingPostgres();
 app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(methodOverride());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -29,10 +31,6 @@ app.use((req, res, next) => {
     next(err);
 });
 
-
-// app.get('*', (req, res, next) => {
-//     res.send()
-// });
 
 // error handlers
 
@@ -51,11 +49,8 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-    res.json('error', {
-        message: err.message,
-        error: {}
-    });
+    res.status(err.code || 500);
+    res.send(err.message || 'Somehting went wrong');
 });
 
 module.exports = app;
