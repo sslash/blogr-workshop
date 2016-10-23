@@ -10,7 +10,7 @@ module.exports = {
         path.join(__dirname, 'frontend/main.js')
     ],
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(__dirname, '..', 'dist'),
         filename: 'bundle.js'
     },
     plugins: [
@@ -18,6 +18,16 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
     ],
+    devServer: {
+         port: 3001,
+         contentBase: '/',
+         historyApiFallback: true,
+         proxy: {
+           '/api': {
+             target: 'http://127.0.0.1:3000'
+           }
+         }
+     },
     module: {
         loaders: [
             {

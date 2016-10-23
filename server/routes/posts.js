@@ -3,7 +3,7 @@ var postsService = require('../services/postsService');
 var router = express.Router();
 
 /* GET posts listing. */
-router.get('/', function(req, res, next) {
+router.get('/posts/', function(req, res, next) {
     postsService.getAll()
     .then((result) => {
         res.json({
@@ -16,7 +16,7 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.get('/:id', (req, res, next) => {
+router.get('/posts/:id', (req, res, next) => {
     var id = req.params.id;
     console.log('route id: '+id);
     postsService.getPost(id)
@@ -31,7 +31,7 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/posts/:id', (req, res, next) => {
     var id = req.params.id;
     postsService.getPost(id)
     .then((result) => {

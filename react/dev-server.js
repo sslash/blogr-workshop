@@ -4,6 +4,7 @@ const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
+const proxy = require('http-proxy-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('./webpack.config.js');
 
@@ -26,11 +27,7 @@ const middleware = webpackMiddleware(compiler, {
 app.use(middleware);
 app.use(webpackHotMiddleware(compiler));
 
-app.get("/", function(req, res) {
-  res.sendFile(__dirname + '/public/index.html');
-});
-
-app.use(express.static('public'));
+app.use('*', proxy({target: 'http://localhost:3000'}));
 
 app.listen(port, '0.0.0.0', function onStart(err) {
   if (err) {

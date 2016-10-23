@@ -9,10 +9,8 @@ function getPost (id) {
 }
 
 function deletePost (id) {
-    console.log('#### delete should be called for Post '+id);
     return postsDAO.deletePost(id);
 }
-
 
 module.exports = {
     getAll: getAll,

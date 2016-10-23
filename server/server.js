@@ -12,15 +12,14 @@ var app = express();
 // connect to postgres
 dbConnection.pingPostgres();
 
-app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/posts', posts);
+app.use('/', express.static('public'));
+app.use('/api', posts);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -29,27 +28,10 @@ app.use((req, res, next) => {
     next(err);
 });
 
-// error handlers
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use((err, req, res, next) => {
-        res.status(err.status || 500);
-        res.json('error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
-
 // production error handler
 // no stacktraces leaked to user
 app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-    res.json('error', {
-        message: err.message,
-        error: {}
-    });
+    res.status(err.status || 500).json(err);
 });
 
 module.exports = app;

@@ -3,7 +3,6 @@ var pg = require('../lib/dbConnection').db;
 function getAll () {
     return pg.query('SELECT * FROM posts')
     .then((results) => {
-        console.log(`SAP! results`, results);
         return results;
     })
     .catch((error) => {
@@ -13,10 +12,8 @@ function getAll () {
 }
 
 function getPost (id) {
-    console.log('getPost: '+id)
     return pg.query('SELECT * FROM posts where id='+id)
     .then((results) => {
-        console.log(`SAP! results`, results);
         return results;
     })
     .catch((error) => {
@@ -26,10 +23,8 @@ function getPost (id) {
 }
 
 function deletePost (id) {
-    console.log('deletePost: '+id)
     return pg.query('delete from posts where id='+id)
     .then((results) => {
-        console.log(`SAP! results`, results);
         return results;
     })
     .catch((error) => {

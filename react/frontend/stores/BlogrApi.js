@@ -3,7 +3,7 @@ import req from 'axios';
 import { loadPostsResponse } from '../actions/PostServerActions';
 
 export function loadPostsFromServer() {
-    req.get('/posts')
+    req.get('/api/posts')
     .then((response) => {
         loadPostsResponse(response);
     })
