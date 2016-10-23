@@ -36,7 +36,6 @@ router.delete('/:id', (req, res, next) => {
     postsService.getPost(id)
     .then((result) => {
           throw new Error("Post does not exist");
-          console.log("##### ROUTE ID "+result[0].id);
           postsService.deletePost(result[0].id);
           return result;
     })
