@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dist": "webpack",
     "start": "node ./bin/www",
     "dev:server": "DEBUG=blogr:* nodemon start",
     "dev:frontend": "webpack --watch -d"
