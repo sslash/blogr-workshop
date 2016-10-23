@@ -29,14 +29,7 @@ app.use((req, res, next) => {
     next(err);
 });
 
-
-app.get('*', (req, res, next) => {
-    console.log('spdap')
-    res.json({hello: 'world'})
-});
-
 // error handlers
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
