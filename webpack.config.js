@@ -10,8 +10,7 @@ module.exports = {
         path.join(__dirname, 'frontend/main.js')
     ],
     output: {
-        path: __dirname,
-        publicPath: '/',
+        path: path.join(__dirname, 'dist'),
         filename: 'bundle.js'
     },
     plugins: [

@@ -30,6 +30,8 @@ app.get("/", function(req, res) {
   res.sendFile(__dirname + '/public/index.html');
 });
 
+app.use(express.static('public'));
+
 app.listen(port, '0.0.0.0', function onStart(err) {
   if (err) {
     console.log(err);
