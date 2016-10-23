@@ -3,5 +3,10 @@ node {
    checkout scm
 
    stage 'Build'
-   sh "${mvnHome}/bin/mvn clean install"
+   sh "npm install"
+
+   stage 'Deploy to test'
+
+   stage 'Deploy to prod'
+
 }
