@@ -12,7 +12,7 @@ var app = express();
 // connect to postgres
 dbConnection.pingPostgres();
 
-app.use(logger('dev'));
+app.use(logger('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride());
