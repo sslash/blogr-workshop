@@ -6,7 +6,7 @@ const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
 const proxy = require('http-proxy-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
-const config = require('./webpack.config.js');
+const config = require('./webpack.dev.config.js');
 
 const port = 3001;
 const app = express();
