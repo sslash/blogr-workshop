@@ -29,6 +29,7 @@ node('master') {
            stage 'Build'
                 dir('server'){
                     sh 'npm run build'
+                    sh 'cp -rv node_modules dist'
                 }
                 dir('react'){
                     sh 'npm run build'
