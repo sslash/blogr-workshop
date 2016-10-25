@@ -8,7 +8,7 @@ module.exports = {
         path.join(__dirname, 'src/main.js')
     ],
     output: {
-        path: path.join(__dirname, '..', 'dist'),
+        path: path.join(__dirname, 'dist'),
         filename: 'client.js'
     },
     plugins: [
