@@ -7,7 +7,6 @@ node('master') {
             env.NODE_ENV = "test"
             print "Environment will be : ${env.NODE_ENV}"
 
-            cd server
             sh 'node -v'
             sh '(cd server && npm install)'
 
