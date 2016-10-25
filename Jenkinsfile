@@ -6,10 +6,13 @@ node('master') {
             checkout scm
        stage 'Test'
             env.NODE_ENV = "test"
-            print "Environment will be : ${env.NODE_ENV}"
+            print "Environment will be: ${env.NODE_ENV}"
+            sh 'node -v'
 
             dir('server'){
-                sh 'node -v'
+                sh 'npm install'
+            }
+            dir('client'){
                 sh 'npm install'
             }
 
@@ -17,11 +20,17 @@ node('master') {
             dir('server'){
                 sh 'npm run build'
             }
+            dir('client'){
+                sh 'npm run build'
+            }
 
        stage 'Deploy'
 
        stage 'Cleanup'
             dir('server'){
+                sh 'rm node_modules -rf'
+            }
+            dir('client'){
                 sh 'rm node_modules -rf'
             }
 
