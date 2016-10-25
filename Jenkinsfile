@@ -12,7 +12,7 @@ node('master') {
             dir('server'){
                 sh 'npm install'
             }
-            dir('client'){
+            dir('react'){
                 sh 'npm install'
             }
 
@@ -20,7 +20,7 @@ node('master') {
             dir('server'){
                 sh 'npm run build'
             }
-            dir('client'){
+            dir('react'){
                 sh 'npm run build'
             }
 
@@ -30,7 +30,7 @@ node('master') {
             dir('server'){
                 sh 'rm node_modules -rf'
             }
-            dir('client'){
+            dir('react'){
                 sh 'rm node_modules -rf'
             }
 
