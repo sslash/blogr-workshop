@@ -1,6 +1,5 @@
 node('master') {
     currentBuild.result = "SUCCESS"
-    sh 'cd server'
 
     try {
        stage 'Checkout'
@@ -9,16 +8,22 @@ node('master') {
             env.NODE_ENV = "test"
             print "Environment will be : ${env.NODE_ENV}"
 
-            sh 'node -v'
-            sh 'npm install'
+            dir('server'){
+                sh 'node -v'
+                sh 'npm install'
+            }
 
        stage 'Build'
-            sh 'npm run build'
+            dir('server'){
+                sh 'npm run build'
+            }
 
        stage 'Deploy'
 
        stage 'Cleanup'
-            sh 'rm node_modules -rf'
+            dir('server'){
+                sh 'rm node_modules -rf'
+            }
 
     }catch (err) {
         currentBuild.result = "FAILURE"
