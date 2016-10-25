@@ -39,8 +39,8 @@ node('master') {
                 archiveArtifacts artifacts: 'server/dist/*.js, react/dist/*.js', fingerprint: true
 
                 dir('server'){
-                    sh 'scp -r dist/* app-3.dragon.lan:/opt/blogr'
-                    sh 'scp -r dist/* app-4.dragon.lan:/opt/blogr'
+                    sh 'scp -r dist/* root@app-3.dragon.lan:/opt/blogr'
+                    sh 'scp -r dist/* root@app-4.dragon.lan:/opt/blogr'
                 }
 
            stage 'Cleanup'
