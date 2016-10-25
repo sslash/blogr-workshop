@@ -7,16 +7,17 @@ node('master') {
             env.NODE_ENV = "test"
             print "Environment will be : ${env.NODE_ENV}"
 
+            cd server
             sh 'node -v'
-            sh 'npm install'
+            sh '(cd server && npm install)'
 
        stage 'Build'
-            sh 'npm run build'
+            sh '(cd server && npm run build)'
 
        stage 'Deploy'
 
        stage 'Cleanup'
-            sh 'rm node_modules -rf'
+            sh '(cd server && rm node_modules -rf)'
 
     }catch (err) {
         currentBuild.result = "FAILURE"
