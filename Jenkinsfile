@@ -2,8 +2,15 @@ node('master') {
     currentBuild.result = "SUCCESS"
 
     try {
-       stage 'Checkout'
+       stage 'Prepare'
             checkout scm
+
+            dir('server'){
+                sh 'npm install'
+            }
+            dir('react'){
+                sh 'npm install'
+            }
        stage 'Test'
             env.NODE_ENV = "test"
             print "Environment will be: ${env.NODE_ENV}"
