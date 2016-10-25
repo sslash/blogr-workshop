@@ -1,48 +1,51 @@
 node('master') {
     currentBuild.result = "SUCCESS"
-    try {
-       stage 'Prepare'
-            checkout scm
 
-            dir('server'){
-                sh 'npm install'
-            }
-            dir('react'){
-                sh 'npm install'
-            }
-       stage 'Test'
-            env.NODE_ENV = "test"
-            print "Environment will be: ${env.NODE_ENV}"
-            sh 'node -v'
+    wrap([$class: 'AnsiColorBuildWrapper']) {
+        try {
+           stage 'Prepare'
+                checkout scm
 
-            dir('server'){
-                sh 'npm install'
-            }
-            dir('react'){
-                sh 'npm install'
-            }
+                dir('server'){
+                    sh 'npm install'
+                }
+                dir('react'){
+                    sh 'npm install'
+                }
+           stage 'Test'
+                env.NODE_ENV = "test"
+                print "Environment will be: ${env.NODE_ENV}"
+                sh 'node -v'
 
-       stage 'Build'
-            dir('server'){
-                sh 'npm run build'
-            }
-            dir('react'){
-                sh 'npm run build'
-            }
+                dir('server'){
+                    sh 'npm install'
+                }
+                dir('react'){
+                    sh 'npm install'
+                }
 
-       stage 'Deploy'
-            archiveArtifacts artifacts: 'server/dist/*.js, react/dist/*.js', fingerprint: true
+           stage 'Build'
+                dir('server'){
+                    sh 'npm run build'
+                }
+                dir('react'){
+                    sh 'npm run build'
+                }
 
-       stage 'Cleanup'
-            dir('server'){
-                sh 'rm node_modules -rf'
-            }
-            dir('react'){
-                sh 'rm node_modules -rf'
-            }
+           stage 'Deploy'
+                archiveArtifacts artifacts: 'server/dist/*.js, react/dist/*.js', fingerprint: true
 
-    }catch (err) {
-        currentBuild.result = "FAILURE"
-        throw err
+           stage 'Cleanup'
+                dir('server'){
+                    sh 'rm node_modules -rf'
+                }
+                dir('react'){
+                    sh 'rm node_modules -rf'
+                }
+
+        }catch (err) {
+            currentBuild.result = "FAILURE"
+            throw err
+        }
     }
 }
