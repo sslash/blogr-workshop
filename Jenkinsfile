@@ -32,9 +32,7 @@ node('master') {
             }
 
        stage 'Deploy'
-            dir('dist'){
-                archiveArtifacts artifacts: '*.js', fingerprint: true
-            }
+            archiveArtifacts artifacts: './server/dist/*.js, ./react/dist/*.js', fingerprint: true
 
        stage 'Cleanup'
             dir('server'){
