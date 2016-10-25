@@ -1,6 +1,6 @@
 node('master') {
     currentBuild.result = "SUCCESS"
-    wrap([$class: 'AnsiColorBuildWrapper']) {
+#    wrap([$class: 'AnsiColorBuildWrapper']) {
         try {
            stage 'Prepare'
                 checkout scm
@@ -46,5 +46,5 @@ node('master') {
             currentBuild.result = "FAILURE"
             throw err
         }
-    }
+#   }
 }
