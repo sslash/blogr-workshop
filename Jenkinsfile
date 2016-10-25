@@ -25,6 +25,7 @@ node('master') {
             }
 
        stage 'Deploy'
+            archiveArtifacts artifacts: '**/dist/*.js', fingerprint: true
 
        stage 'Cleanup'
             dir('server'){
