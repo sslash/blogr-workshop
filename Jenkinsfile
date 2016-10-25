@@ -2,8 +2,10 @@ node('master') {
     currentBuild.result = "SUCCESS"
 
     wrap([$class: 'AnsiColorBuildWrapper']) {
+
         try {
            stage 'Prepare'
+                sh 'npm config set color always'
                 checkout scm
 
                 dir('server'){
