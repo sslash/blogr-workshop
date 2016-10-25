@@ -49,7 +49,6 @@ node('master') {
                 }
                 dir('react'){
                     sh 'rm node_modules -rf'
-                    sh 'rm dist -rf'
                 }
 
         }catch (err) {
