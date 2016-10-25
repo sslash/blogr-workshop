@@ -29,21 +29,23 @@ node('master') {
            stage 'Build'
                 dir('server'){
                     sh 'npm run build'
-                    sh 'cp -r node_modules dist'
                     sh 'cp package.json dist'
-                    zip archive: true, dir: 'dist', glob: '*', zipFile: 'server.zip'
                 }
                 dir('react'){
                     sh 'npm run build'
                 }
 
            stage 'Deploy'
-                archiveArtifacts artifacts: 'server/dist/*.zip, react/dist/*.js', fingerprint: true
+                archiveArtifacts artifacts: 'server/dist/*.js, react/dist/*.js', fingerprint: true
+
+                dir('server'){
+                    sh 'scp -r dist/* root:password1@app-3.dragon.lan:/opt/blogr'
+                    sh 'scp -r dist/* root:password1@app-4.dragon.lan:/opt/blogr'
+                }
 
            stage 'Cleanup'
                 dir('server'){
                     sh 'rm node_modules -rf'
-                    sh 'rm dist -rf'
                 }
                 dir('react'){
                     sh 'rm node_modules -rf'
