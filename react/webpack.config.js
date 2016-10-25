@@ -9,9 +9,10 @@ module.exports = {
     ],
     output: {
         path: path.join(__dirname, '..', 'dist'),
-        filename: 'bundle.js'
+        filename: 'client.js'
     },
     plugins: [
+        new webpack.optimize.OccurenceOrderPlugin(),
     ],
     module: {
         loaders: [
