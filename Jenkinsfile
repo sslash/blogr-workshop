@@ -1,7 +1,7 @@
 node('master') {
     currentBuild.result = "SUCCESS"
 
-    wrap([$class: 'AnsiColorBuildWrapper']) {
+    wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm', 'defaultFg': 1, 'defaultBg': 2]) {
 
         try {
            stage 'Prepare'
