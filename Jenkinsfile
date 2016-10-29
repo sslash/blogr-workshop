@@ -55,6 +55,7 @@ node('master') {
                 sh "ssh jenkins@app-3.dragon.lan 'unzip /opt/upload/${env.BUILD_NUMBER}'/server.zip -d /opt/upload/${env.BUILD_NUMBER}/server"
                 sh "ssh jenkins@app-3.dragon.lan 'unzip /opt/upload/${env.BUILD_NUMBER}'/public.zip -d /opt/upload/${env.BUILD_NUMBER}/public"
                 sh "ssh jenkins@app-3.dragon.lan 'unzip /opt/upload/${env.BUILD_NUMBER}'/client.zip -d /opt/upload/${env.BUILD_NUMBER}/public"
+                sh "ssh jenkins@app-3.dragon.lan 'rm /opt/upload/${env.BUILD_NUMBER}'/*.zip"
 
 /*
         def response = httpRequest 'http://localhost:8080/jenkins/api/json?pretty=true'
