@@ -35,6 +35,7 @@ node('master') {
                 dir('react'){
                     sh 'npm run build'
                 }
+                archiveArtifacts artifacts: 'server/dist/*.js, react/dist/*.js', fingerprint: true
 
            stage 'Deploy'
 
