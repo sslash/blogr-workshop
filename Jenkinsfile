@@ -51,6 +51,11 @@ node('master') {
                 sh "rsync -r server.zip jenkins@app-3.dragon.lan:/opt/upload/${env.BUILD_NUMBER}/server.zip"
                 sh "rsync -r client.zip jenkins@app-3.dragon.lan:/opt/upload/${env.BUILD_NUMBER}/client.zip"
                 sh "rsync -r public.zip jenkins@app-3.dragon.lan:/opt/upload/${env.BUILD_NUMBER}/public.zip"
+
+                sh "ssh jenkins@app-3.dragon.lan 'unzip /opt/upload/${env.BUILD_NUMBER}'/server.zip -d /opt/upload/${env.BUILD_NUMBER}/server"
+                sh "ssh jenkins@app-3.dragon.lan 'unzip /opt/upload/${env.BUILD_NUMBER}'/public.zip -d /opt/upload/${env.BUILD_NUMBER}/public"
+                sh "ssh jenkins@app-3.dragon.lan 'unzip /opt/upload/${env.BUILD_NUMBER}'/client.zip -d /opt/upload/${env.BUILD_NUMBER}/public"
+
            stage 'Cleanup'
                 deleteDir()
 
