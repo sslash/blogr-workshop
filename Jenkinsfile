@@ -35,14 +35,9 @@ node('master') {
                 dir('react'){
                     sh 'npm run build'
                 }
-                archiveArtifacts artifacts: 'server/dist/*.js, react/dist/*.js', fingerprint: true
 
            stage 'Deploy'
 
-                dir('server'){
-                    sh 'rsync -r dist/* jenkins@app-3.dragon.lan:/opt/upload/build-${env.BUILD_NUMBER}'
-                    sh 'rsync -r dist/* jenkins@app-4.dragon.lan:/opt/upload/build-${env.BUILD_NUMBER}'
-                }
 
            stage 'Cleanup'
                 dir('server'){
