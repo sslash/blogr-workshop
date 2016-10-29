@@ -7,6 +7,11 @@ node('master') {
            stage 'Prepare'
                 sh 'npm config set color always'
                 checkout scm
+
+                sh 'rm public.zip'
+                sh 'rm react/client.zip'
+                sh 'rm server/server.zip'
+
                 parallel (
                   npmbuild1: {
                     dir('server'){
