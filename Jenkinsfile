@@ -30,15 +30,20 @@ node('master') {
                 dir('server'){
                     sh 'npm run build'
                     sh 'cp -r node_modules dist'
-                    zip archive: true, dir: 'dist', glob: '**', zipFile: 'server.zip'
                 }
                 dir('react'){
                     sh 'npm run build'
                 }
-                archiveArtifacts artifacts: 'server/dist/*.js, react/dist/*.js', fingerprint: true
+
+                zip archive: true, dir: 'public', glob: '**', zipFile: 'public.zip'
+                zip archive: true, dir: 'react/dist', glob: '**', zipFile: 'client.zip'
+                zip archive: true, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
 
            stage 'Deploy'
-
+                print "Deploy to servers."
+                sh 'rsync -r server/server.zip jenkins@app-3.dragon.lan:/opt/upload/server-${env.BUILD_NUMBER}.zip'
+                sh 'rsync -r react/client.zip jenkins@app-3.dragon.lan:/opt/upload/client-${env.BUILD_NUMBER}.zip'
+                sh 'rsync -r public.zip jenkins@app-3.dragon.lan:/opt/upload/public-${env.BUILD_NUMBER}.zip'
 
            stage 'Cleanup'
                 dir('server'){
