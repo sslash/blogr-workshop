@@ -66,16 +66,16 @@ node('master') {
             throw err
         }
     }
+}
 
-    def deployTo(server){
-        sh "ssh jenkins@${server} 'mkdir -p /opt/upload/${env.BUILD_NUMBER}'"
-        sh "rsync -r server.zip jenkins@${server}:/opt/upload/${env.BUILD_NUMBER}/server.zip"
-        sh "rsync -r client.zip jenkins@${server}:/opt/upload/${env.BUILD_NUMBER}/client.zip"
-        sh "rsync -r public.zip jenkins@${server}:/opt/upload/${env.BUILD_NUMBER}/public.zip"
+def deployTo(server){
+    sh "ssh jenkins@${server} 'mkdir -p /opt/upload/${env.BUILD_NUMBER}'"
+    sh "rsync -r server.zip jenkins@${server}:/opt/upload/${env.BUILD_NUMBER}/server.zip"
+    sh "rsync -r client.zip jenkins@${server}:/opt/upload/${env.BUILD_NUMBER}/client.zip"
+    sh "rsync -r public.zip jenkins@${server}:/opt/upload/${env.BUILD_NUMBER}/public.zip"
 
-        sh "ssh jenkins@${server} 'unzip /opt/upload/${env.BUILD_NUMBER}'/server.zip -d /opt/upload/${env.BUILD_NUMBER}/server"
-        sh "ssh jenkins@${server} 'unzip /opt/upload/${env.BUILD_NUMBER}'/public.zip -d /opt/upload/${env.BUILD_NUMBER}/public"
-        sh "ssh jenkins@${server} 'unzip /opt/upload/${env.BUILD_NUMBER}'/client.zip -d /opt/upload/${env.BUILD_NUMBER}/public"
-        sh "ssh jenkins@${server} 'rm /opt/upload/${env.BUILD_NUMBER}'/*.zip"
-    }
+    sh "ssh jenkins@${server} 'unzip /opt/upload/${env.BUILD_NUMBER}'/server.zip -d /opt/upload/${env.BUILD_NUMBER}/server"
+    sh "ssh jenkins@${server} 'unzip /opt/upload/${env.BUILD_NUMBER}'/public.zip -d /opt/upload/${env.BUILD_NUMBER}/public"
+    sh "ssh jenkins@${server} 'unzip /opt/upload/${env.BUILD_NUMBER}'/client.zip -d /opt/upload/${env.BUILD_NUMBER}/public"
+    sh "ssh jenkins@${server} 'rm /opt/upload/${env.BUILD_NUMBER}'/*.zip"
 }
