@@ -29,18 +29,19 @@ node('master') {
            stage 'Build'
                 dir('server'){
                     sh 'npm run build'
-                    sh 'cp package.json dist'
+                    sh 'cp node_modules dist'
+                    zip archive: true, dir: 'dist', glob: '', zipFile: 'server.zip'
                 }
                 dir('react'){
                     sh 'npm run build'
                 }
-
-           stage 'Deploy'
                 archiveArtifacts artifacts: 'server/dist/*.js, react/dist/*.js', fingerprint: true
 
+           stage 'Deploy'
+
                 dir('server'){
-                    sh 'scp -r dist/* jenkins@app-3.dragon.lan:/opt/blogr'
-                    sh 'scp -r dist/* jenkins@app-4.dragon.lan:/opt/blogr'
+                    sh 'rsync -r dist/* jenkins@app-3.dragon.lan:/opt/upload/build-${env.BUILD_NUMBER}'
+                    sh 'rsync -r dist/* jenkins@app-4.dragon.lan:/opt/upload/build-${env.BUILD_NUMBER}'
                 }
 
            stage 'Cleanup'
