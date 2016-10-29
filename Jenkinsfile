@@ -47,19 +47,19 @@ node('master') {
 
            stage 'Deploy'
                 print "Deploy to servers."
-                deployTo("app-3.dragon.lan")
+                deployTo "app-3.dragon.lan"
 
 // TODO fix rest of servers
-//                deployTo("app-1.dragon.lan")
-//                deployTo("app-2.dragon.lan")
-//                deployTo("app-4.dragon.lan")
+//                deployTo "app-1.dragon.lan"
+//                deployTo "app-2.dragon.lan"
+//                deployTo "app-4.dragon.lan"
 /*
         def response = httpRequest 'http://localhost:8080/jenkins/api/json?pretty=true'
         println("Status: "+response.status)
         println("Content: "+response.content)
 */
            stage 'Cleanup'
-                deleteDir()
+                deleteDir
 
         }catch (err) {
             currentBuild.result = "FAILURE"
