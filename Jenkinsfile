@@ -47,16 +47,12 @@ node('master') {
 
            stage 'Deploy'
                 print "Deploy to servers."
-                sh "ssh jenkins@app-3.dragon.lan 'mkdir -p /opt/upload/${env.BUILD_NUMBER}'"
-                sh "rsync -r server.zip jenkins@app-3.dragon.lan:/opt/upload/${env.BUILD_NUMBER}/server.zip"
-                sh "rsync -r client.zip jenkins@app-3.dragon.lan:/opt/upload/${env.BUILD_NUMBER}/client.zip"
-                sh "rsync -r public.zip jenkins@app-3.dragon.lan:/opt/upload/${env.BUILD_NUMBER}/public.zip"
+                deployTo("app-3.dragon.lan")
 
-                sh "ssh jenkins@app-3.dragon.lan 'unzip /opt/upload/${env.BUILD_NUMBER}'/server.zip -d /opt/upload/${env.BUILD_NUMBER}/server"
-                sh "ssh jenkins@app-3.dragon.lan 'unzip /opt/upload/${env.BUILD_NUMBER}'/public.zip -d /opt/upload/${env.BUILD_NUMBER}/public"
-                sh "ssh jenkins@app-3.dragon.lan 'unzip /opt/upload/${env.BUILD_NUMBER}'/client.zip -d /opt/upload/${env.BUILD_NUMBER}/public"
-                sh "ssh jenkins@app-3.dragon.lan 'rm /opt/upload/${env.BUILD_NUMBER}'/*.zip"
-
+// TODO fix rest of servers
+//                deployTo("app-1.dragon.lan")
+//                deployTo("app-2.dragon.lan")
+//                deployTo("app-4.dragon.lan")
 /*
         def response = httpRequest 'http://localhost:8080/jenkins/api/json?pretty=true'
         println("Status: "+response.status)
@@ -69,5 +65,17 @@ node('master') {
             currentBuild.result = "FAILURE"
             throw err
         }
+    }
+
+    def deployTo(server){
+        sh "ssh jenkins@${server} 'mkdir -p /opt/upload/${env.BUILD_NUMBER}'"
+        sh "rsync -r server.zip jenkins@${server}:/opt/upload/${env.BUILD_NUMBER}/server.zip"
+        sh "rsync -r client.zip jenkins@${server}:/opt/upload/${env.BUILD_NUMBER}/client.zip"
+        sh "rsync -r public.zip jenkins@${server}:/opt/upload/${env.BUILD_NUMBER}/public.zip"
+
+        sh "ssh jenkins@${server} 'unzip /opt/upload/${env.BUILD_NUMBER}'/server.zip -d /opt/upload/${env.BUILD_NUMBER}/server"
+        sh "ssh jenkins@${server} 'unzip /opt/upload/${env.BUILD_NUMBER}'/public.zip -d /opt/upload/${env.BUILD_NUMBER}/public"
+        sh "ssh jenkins@${server} 'unzip /opt/upload/${env.BUILD_NUMBER}'/client.zip -d /opt/upload/${env.BUILD_NUMBER}/public"
+        sh "ssh jenkins@${server} 'rm /opt/upload/${env.BUILD_NUMBER}'/*.zip"
     }
 }
