@@ -47,8 +47,8 @@ node('master') {
 
            stage 'Deploy'
                 print "Deploy to servers."
-                sh "rsync -r server/server.zip jenkins@app-3.dragon.lan:/opt/upload/server-${env.BUILD_NUMBER}.zip"
-                sh "rsync -r react/client.zip jenkins@app-3.dragon.lan:/opt/upload/client-${env.BUILD_NUMBER}.zip"
+                sh "rsync -r server.zip jenkins@app-3.dragon.lan:/opt/upload/server-${env.BUILD_NUMBER}.zip"
+                sh "rsync -r client.zip jenkins@app-3.dragon.lan:/opt/upload/client-${env.BUILD_NUMBER}.zip"
                 sh "rsync -r public.zip jenkins@app-3.dragon.lan:/opt/upload/public-${env.BUILD_NUMBER}.zip"
 
            stage 'Cleanup'
