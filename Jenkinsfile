@@ -51,12 +51,7 @@ node('master') {
                 sh "rsync -r public.zip jenkins@app-3.dragon.lan:/opt/upload/public-${env.BUILD_NUMBER}.zip"
 
            stage 'Cleanup'
-                dir('server'){
-                    sh 'rm node_modules -rf'
-                }
-                dir('react'){
-                    sh 'rm node_modules -rf'
-                }
+                deleteDir()
 
         }catch (err) {
             currentBuild.result = "FAILURE"
