@@ -30,7 +30,7 @@ node('master') {
                 dir('server'){
                     sh 'npm run build'
                     sh 'cp -r node_modules dist'
-                    zip archive: true, dir: 'dist', glob: '', zipFile: 'server.zip'
+                    zip archive: true, dir: 'dist', glob: '**', zipFile: 'dist.zip'
                 }
                 dir('react'){
                     sh 'npm run build'
