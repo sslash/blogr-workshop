@@ -8,10 +8,6 @@ node('master') {
                 sh 'npm config set color always'
                 checkout scm
 
-                sh 'rm *.zip'
-                sh 'rm react/*.zip'
-                sh 'rm server/*.zip'
-
                 parallel (
                   npmbuild1: {
                     dir('server'){
