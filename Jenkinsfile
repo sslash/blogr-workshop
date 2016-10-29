@@ -29,7 +29,7 @@ node('master') {
            stage 'Build'
                 dir('server'){
                     sh 'npm run build'
-                    sh 'cp node_modules dist'
+                    sh 'cp -r node_modules dist'
                     zip archive: true, dir: 'dist', glob: '', zipFile: 'server.zip'
                 }
                 dir('react'){
