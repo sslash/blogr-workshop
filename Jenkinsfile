@@ -47,10 +47,10 @@ node('master') {
 
            stage 'Deploy'
                 print "Deploy to servers."
-                sh "rsync -r server.zip jenkins@app-3.dragon.lan:/opt/upload/server-${env.BUILD_NUMBER}.zip"
-                sh "rsync -r client.zip jenkins@app-3.dragon.lan:/opt/upload/client-${env.BUILD_NUMBER}.zip"
-                sh "rsync -r public.zip jenkins@app-3.dragon.lan:/opt/upload/public-${env.BUILD_NUMBER}.zip"
-
+                sh "ssh jenkins@app-3.dragon.lan 'mkdir -p /opt/upload/${env.BUILD_NUMBER}'"
+                sh "rsync -r server.zip jenkins@app-3.dragon.lan:/opt/upload/${env.BUILD_NUMBER}/server.zip"
+                sh "rsync -r client.zip jenkins@app-3.dragon.lan:/opt/upload/${env.BUILD_NUMBER}/client.zip"
+                sh "rsync -r public.zip jenkins@app-3.dragon.lan:/opt/upload/${env.BUILD_NUMBER}/public.zip"
            stage 'Cleanup'
                 deleteDir()
 
