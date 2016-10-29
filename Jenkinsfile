@@ -7,13 +7,18 @@ node('master') {
            stage 'Prepare'
                 sh 'npm config set color always'
                 checkout scm
-
-                dir('server'){
-                    sh 'npm install'
-                }
-                dir('react'){
-                    sh 'npm install'
-                }
+                parallel (
+                  npmbuild1: {
+                    dir('server'){
+                        sh 'npm install'
+                    }
+                  },
+                  npmbuild2: {
+                    dir('react'){
+                        sh 'npm install'
+                    }
+                  }
+                )
            stage 'Test'
                 env.NODE_ENV = "test"
                 print "Environment will be: ${env.NODE_ENV}"
