@@ -59,7 +59,7 @@ node('master') {
         println("Content: "+response.content)
 */
            stage 'Cleanup'
-                deleteDir
+                deleteDir()
 
         }catch (err) {
             currentBuild.result = "FAILURE"
@@ -69,6 +69,7 @@ node('master') {
 }
 
 def deployTo(server){
+    print "Deploy to ${server}"
     sh "ssh jenkins@${server} 'mkdir -p /opt/upload/${env.BUILD_NUMBER}'"
     sh "rsync -r server.zip jenkins@${server}:/opt/upload/${env.BUILD_NUMBER}/server.zip"
     sh "rsync -r client.zip jenkins@${server}:/opt/upload/${env.BUILD_NUMBER}/client.zip"
