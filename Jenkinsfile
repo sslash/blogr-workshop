@@ -9,12 +9,12 @@ node('master') {
                 checkout scm
 
                 parallel (
-                  npmbuild1: {
+                  npm_install_server: {
                     dir('server'){
                         sh 'npm install'
                     }
                   },
-                  npmbuild2: {
+                  npm_install_react: {
                     dir('react'){
                         sh 'npm install'
                     }
@@ -48,11 +48,11 @@ node('master') {
            stage 'Deploy'
                 print "Deploy to servers."
                 deployTo "app-3.dragon.lan"
+                deployTo "app-4.dragon.lan"
 
 // TODO fix rest of servers
 //                deployTo "app-1.dragon.lan"
 //                deployTo "app-2.dragon.lan"
-//                deployTo "app-4.dragon.lan"
 /*
         def response = httpRequest 'http://localhost:8080/jenkins/api/json?pretty=true'
         println("Status: "+response.status)
