@@ -78,5 +78,11 @@ def deployTo(server){
     sh "ssh jenkins@${server} 'unzip /opt/blogr/upload/${env.BUILD_NUMBER}'/server.zip -d /opt/blogr/upload/${env.BUILD_NUMBER}/server"
     sh "ssh jenkins@${server} 'unzip /opt/blogr/upload/${env.BUILD_NUMBER}'/public.zip -d /opt/blogr/upload/${env.BUILD_NUMBER}/public"
     sh "ssh jenkins@${server} 'unzip /opt/blogr/upload/${env.BUILD_NUMBER}'/client.zip -d /opt/blogr/upload/${env.BUILD_NUMBER}/public"
+
+    sh "ssh jenkins@${server} 'rm /opt/blogr/prev'"
+    sh "ssh jenkins@${server} 'mv /opt/blogr/latest /opt/blogr/prev'"
+    sh "ssh jenkins@${server} 'ln -s /opt/blogr/upload/${env.BUILD_NUMBER} /opt/blogr/latest'"
+
     sh "ssh jenkins@${server} 'rm /opt/blogr/upload/${env.BUILD_NUMBER}'/*.zip"
+    sh "ssh jenkins@${server} 'service node-app restart --force"
 }
