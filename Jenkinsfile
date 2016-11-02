@@ -5,6 +5,9 @@ node('master') {
 
         try {
            stage 'Prepare'
+                // cleanup workspace before build from old artifacts.
+                deleteDir()
+
                 sh 'npm config set color always'
                 checkout scm
 
@@ -50,16 +53,6 @@ node('master') {
                 deployTo "app-3.dragon.lan"
                 deployTo "app-4.dragon.lan"
 
-// TODO fix rest of servers
-//                deployTo "app-1.dragon.lan"
-//                deployTo "app-2.dragon.lan"
-/*
-        def response = httpRequest 'http://localhost:8080/jenkins/api/json?pretty=true'
-        println("Status: "+response.status)
-        println("Content: "+response.content)
-*/
-           stage 'Cleanup'
-                deleteDir()
 
         }catch (err) {
             currentBuild.result = "FAILURE"
