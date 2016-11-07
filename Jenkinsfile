@@ -50,11 +50,16 @@ node('master') {
                 zip archive: true, dir: 'react/dist', glob: '**', zipFile: 'client.zip'
                 zip archive: true, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
 
-           stage 'Deploy'
-                print "Deploy to servers."
+           stage 'QA'
+                print "Deploy to qa-servers."
                 deployTo "app-3.dragon.lan"
                 deployTo "app-4.dragon.lan"
 
+                print "Verify that the build is working"
+                input
+
+           stage 'Production'
+                print "Deploy to production-servers."
 
         }catch (err) {
             currentBuild.result = "FAILURE"
