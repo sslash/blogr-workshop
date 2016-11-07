@@ -37,7 +37,7 @@ node('master') {
                     sh 'npm install'
                 }
 
-           stage 'Build'
+           stage 'Build dist'
                 dir('server'){
                     sh 'npm run build'
                     sh 'cp -r node_modules dist'
@@ -50,16 +50,17 @@ node('master') {
                 zip archive: true, dir: 'react/dist', glob: '**', zipFile: 'client.zip'
                 zip archive: true, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
 
-           stage 'QA'
+           stage 'Deploy QA'
                 print "Deploy to qa-servers."
                 deployTo "app-3.dragon.lan"
                 deployTo "app-4.dragon.lan"
 
+           stage 'Verify'
                 print "Verify that the build is working"
-                input 'Continue to Production'
+                input 'Deploy to Production?'
 
-           stage 'Production'
-                print "Deploy to production-servers."
+           stage 'Deploy Prod'
+                print "Deploy to qa-servers."
 
         }catch (err) {
             currentBuild.result = "FAILURE"
