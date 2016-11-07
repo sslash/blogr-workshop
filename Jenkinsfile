@@ -46,9 +46,9 @@ node('master') {
                     sh 'npm run build'
                 }
 
-                zip archive: true, dir: 'public', glob: '**', zipFile: 'public.zip'
-                zip archive: true, dir: 'react/dist', glob: '**', zipFile: 'client.zip'
-                zip archive: true, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
+                zip archive: false, dir: 'public', glob: '**', zipFile: 'public.zip'
+                zip archive: false, dir: 'react/dist', glob: '**', zipFile: 'client.zip'
+                zip archive: false, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
 
            stage 'Deploy QA'
                 print "Deploy to qa-servers."
@@ -61,6 +61,7 @@ node('master') {
 
            stage 'Deploy Prod'
                 print "Deploy to prod-servers."
+                archiveArtifacts artifacts: '**/*.zip', fingerprint: true
 
         }catch (err) {
             currentBuild.result = "FAILURE"
