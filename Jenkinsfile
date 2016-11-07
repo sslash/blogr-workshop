@@ -72,8 +72,7 @@ def deployTo(server){
     sh "ssh jenkins@${server} 'unzip -q /opt/blogr/upload/${env.BUILD_NUMBER}'/public.zip -d /opt/blogr/upload/${env.BUILD_NUMBER}/public"
     sh "ssh jenkins@${server} 'unzip -q /opt/blogr/upload/${env.BUILD_NUMBER}'/client.zip -d /opt/blogr/upload/${env.BUILD_NUMBER}/public"
 
-    sh "ssh jenkins@${server} 'echo `realpath prev`'"
-    sh "ssh jenkins@${server} 'realpath prev | xargs rm -rf'"
+    sh "ssh jenkins@${server} 'realpath /opt/blogr/prev | xargs rm -rf'"
     sh "ssh jenkins@${server} 'rm /opt/blogr/prev'"
     sh "ssh jenkins@${server} 'mv /opt/blogr/latest /opt/blogr/prev'"
     sh "ssh jenkins@${server} 'ln -s /opt/blogr/upload/${env.BUILD_NUMBER} /opt/blogr/latest'"
