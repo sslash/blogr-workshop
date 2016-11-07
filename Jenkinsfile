@@ -48,7 +48,7 @@ node('master') {
                 zip archive: true, dir: 'react/dist', glob: '**', zipFile: 'client.zip'
                 zip archive: true, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
 
-           stage 'Deploy'
+           stage 'Deploy', concurrency: 1
                 print "Deploy to servers."
                 deployTo "app-3.dragon.lan"
                 deployTo "app-4.dragon.lan"
