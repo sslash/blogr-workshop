@@ -61,7 +61,7 @@ node('master') {
 
            stage 'Deploy Prod'
                 print "Deploy to prod-servers."
-                archiveArtifacts artifacts: '**/*.zip', fingerprint: true
+                archiveArtifacts artifacts: '*.zip', fingerprint: true
 
         }catch (err) {
             currentBuild.result = "FAILURE"
