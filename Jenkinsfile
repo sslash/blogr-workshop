@@ -60,7 +60,7 @@ node('master') {
                 input 'Deploy to Production?'
 
            stage 'Deploy Prod'
-                print "Deploy to qa-servers."
+                print "Deploy to prod-servers."
 
         }catch (err) {
             currentBuild.result = "FAILURE"
