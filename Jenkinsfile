@@ -56,7 +56,7 @@ node('master') {
                 deployTo "app-4.dragon.lan"
 
                 print "Verify that the build is working"
-                input
+                input 'Continue to Production'
 
            stage 'Production'
                 print "Deploy to production-servers."
