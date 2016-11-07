@@ -9,6 +9,8 @@ node('master') {
                 deleteDir()
 
                 sh 'npm config set color always'
+                sh 'npm config set loglevel warn'
+
                 checkout scm
 
                 parallel (
