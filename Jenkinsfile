@@ -5,11 +5,13 @@ node('master') {
 
         try {
            stage 'Prepare'
+                print "Prepare for building"
                 // cleanup workspace before build from old artifacts.
                 deleteDir()
 
                 sh 'npm config set color always'
                 sh 'npm config set loglevel warn'
+                sh 'node -v'
 
                 checkout scm
 
@@ -28,33 +30,45 @@ node('master') {
            stage 'Test'
                 env.NODE_ENV = "test"
                 print "Environment will be: ${env.NODE_ENV}"
-                sh 'node -v'
 
-                dir('server'){
-                    sh 'npm install'
-                }
-                dir('react'){
-                    sh 'npm install'
-                }
 
            stage 'Build dist'
-                dir('server'){
-                    sh 'npm run build'
-                    sh 'cp -r node_modules dist'
-                }
-                dir('react'){
-                    sh 'npm run build'
-                }
+                print "Build distribution files."
+                parallel (
+                  npm_build_server: {
+                    dir('server'){
+                        sh 'npm run build'
+                        sh 'cp -r node_modules dist'
+                    }
+                  },
+                  npm_build_react: {
+                    dir('react'){
+                        sh 'npm run build'
+                    }
+                  }
+                )
 
-                zip archive: false, dir: 'public', glob: '**', zipFile: 'public.zip'
-                zip archive: false, dir: 'react/dist', glob: '**', zipFile: 'client.zip'
-                zip archive: false, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
-
+                parallel (
+                  zip_public: {
+                    zip archive: false, dir: 'public', glob: '**', zipFile: 'public.zip'
+                  },
+                  zip_client: {
+                    zip archive: false, dir: 'react/dist', glob: '**', zipFile: 'client.zip'
+                  },
+                  zip_server: {
+                    zip archive: false, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
+                  }
+                )
            stage 'Deploy QA'
                 print "Deploy to qa-servers."
-                deployTo "app-3.dragon.lan"
-                deployTo "app-4.dragon.lan"
-
+                parallel (
+                  deploy_to_app3: {
+                    deployTo "app-3.dragon.lan"
+                  },
+                  deploy_to_app4: {
+                    deployTo "app-4.dragon.lan"
+                  }
+                )
            stage 'Verify'
                 print "Verify that the build is working"
                 input 'Deploy to Production?'
