@@ -71,7 +71,6 @@ node('master') {
                 )
            stage 'Verify'
                 print "Verify that the build is working"
-                input 'Deploy to Production?'
 
            stage 'Deploy Prod'
                 print "Deploy to prod-servers."
