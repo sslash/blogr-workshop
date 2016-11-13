@@ -13,7 +13,13 @@ module.exports = Object.assign(config, {
         // Webpack 1.0
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin()
+        new webpack.NoErrorsPlugin(),
+        new webpack.DefinePlugin({
+            'process.env': {
+              'NODE_ENV': JSON.stringify('production')
+              'BABEL_ENV': JSON.stringify('production')
+            }
+        })
     ],
     devServer: {
          port: 3001,
