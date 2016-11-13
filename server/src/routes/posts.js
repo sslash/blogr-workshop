@@ -10,6 +10,7 @@ router.get('/posts/', function(req, res, next) {
             data: result,
             blogs: result.length
         });
+        res.end();
     })
     .catch((error) => {
         next(error);
@@ -25,6 +26,7 @@ router.get('/posts/:id', (req, res, next) => {
             data: result,
             blogs: result.length
         });
+        res.end();
     })
     .catch((error) => {
         next(error);
@@ -44,6 +46,7 @@ router.delete('/posts/:id', (req, res, next) => {
             data: result,
             blogs: result.length
         });
+        res.end();
     })
     .catch((error) => {
         next(error);
