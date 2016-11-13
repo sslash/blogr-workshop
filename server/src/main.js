@@ -34,6 +34,7 @@ app.use((req, res, next) => {
 // no stacktraces leaked to user
 app.use((err, req, res, next) => {
     res.status(err.status || 500).json(err);
+    res.end();
 });
 
 module.exports = app;
