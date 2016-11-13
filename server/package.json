@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "build": "webpack --config webpack.prod.config.js --profile --colors"
+    "build": "NODE_ENV=production BABEL_ENV=production webpack --config webpack.prod.config.js --profile --colors"
   },
   "repository": {
     "type": "git",
