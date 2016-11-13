@@ -7,11 +7,13 @@ var config = require('./webpack.config');
 module.exports = Object.assign(config, {
     devtool: 'eval-source-map',
     entry: [
-        'webpack-hot-middleware/client?reload=true',
+        'webpack-hot-middleware/client',
     ],
     plugins: [
+        // Webpack 1.0
+        new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin(),
+        new webpack.NoErrorsPlugin()
     ],
     devServer: {
          port: 3001,

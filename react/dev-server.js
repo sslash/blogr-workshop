@@ -13,8 +13,7 @@ const app = express();
 
 const compiler = webpack(config);
 const middleware = webpackMiddleware(compiler, {
-    publicPath: '/',
-    contentBase: '/',
+    publicPath: config.output.publicPath,
     stats: {
       colors: true,
       hash: false,
