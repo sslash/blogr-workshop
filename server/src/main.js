@@ -9,6 +9,7 @@ var posts = require('./routes/posts');
 var system = require('./routes/system');
 var methodOverride = require('method-override');
 var app = express();
+app.use('/', express.static(__dirname + '/../public'));
 
 // connect to postgres
 dbConnection.pingPostgres();
@@ -19,7 +20,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride());
 app.use(cookieParser());
 
-app.use('/', express.static('../public'));
 app.use('/api', posts);
 app.use('/api', system);
 
