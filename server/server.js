@@ -5,6 +5,8 @@ var app = require('./src/main');
 var debug = require('debug')('node-workshop:server');
 var http = require('http');
 
+http.globalAgent.maxSockets=512;
+
 /**
  * Get port from environment and store in Express.
  */
