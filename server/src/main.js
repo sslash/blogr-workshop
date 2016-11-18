@@ -14,7 +14,7 @@ var app = express();
 dbConnection.pingPostgres();
 
 app.use(logger('combined'));
-app.use('/', express.static(__dirname + '/../public'));
+app.use('/', express.static('../public'));
 app.use('/api', posts);
 app.use('/api', system);
 
