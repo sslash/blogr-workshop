@@ -14,7 +14,12 @@ var app = express();
 dbConnection.pingPostgres();
 
 app.use(logger('combined'));
-app.use('/', express.static('../public'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(methodOverride());
+app.use(cookieParser());
+
+app.use('/', express.static('../../public'));
 app.use('/api', posts);
 app.use('/api', system);
 
@@ -29,7 +34,6 @@ app.use((req, res, next) => {
 // no stacktraces leaked to user
 app.use((err, req, res, next) => {
     res.status(err.status || 500).json(err);
-    res.end();
 });
 
 module.exports = app;
