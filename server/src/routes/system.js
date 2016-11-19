@@ -7,7 +7,7 @@ router.get('/system/ping', function(req, res, next) {
     res.end();
 });
 
-router.get('/system/info', function(req, res, next) {
+router.get('/system/version', function(req, res, next) {
     res.json({version:true});
     res.end();
 });
