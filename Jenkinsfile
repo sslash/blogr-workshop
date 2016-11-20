@@ -67,10 +67,8 @@ node('master') {
            stage 'Verify'
                 print "Verify that the build is working"
                 dir('server'){
-                    sh 'export API_URL=http://app-3.dragon.lan npm run test'
-                    sh 'export API_URL=http://app-4.dragon.lan npm run test'
-
-                    step([$class: 'JUnitResultArchiver', testResults: '**/test-results.xml'])
+                    sh 'API_URL=http://app-3.dragon.lan:3000 npm run test'
+                    sh 'API_URL=http://app-4.dragon.lan:3000 npm run test'
                 }
 
            stage 'Deploy Prod'
