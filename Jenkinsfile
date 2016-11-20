@@ -30,7 +30,7 @@ node('master') {
            stage 'Test'
                 env.NODE_ENV = "test"
                 print "Environment will be: ${env.NODE_ENV}"
-                step([$class: 'JUnitResultArchiver', testResults: '**/test-results.xml'])
+//                step([$class: 'JUnitResultArchiver', testResults: '**/test-results.xml'])
 
            stage 'Build dist'
                 print "Build distribution files."
