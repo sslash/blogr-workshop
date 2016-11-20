@@ -61,14 +61,8 @@ node('master') {
                 )
            stage 'Deploy QA'
                 print "Deploy to qa-servers."
-                parallel (
-                  deploy_to_app3: {
-                    deployTo "app-3.dragon.lan"
-                  },
-                  deploy_to_app4: {
-                    deployTo "app-4.dragon.lan"
-                  }
-                )
+                deployTo "app-3.dragon.lan"
+                deployTo "app-4.dragon.lan"
            stage 'Verify'
                 print "Verify that the build is working"
                 dir('server'){
