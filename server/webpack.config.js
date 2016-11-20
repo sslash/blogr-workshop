@@ -13,7 +13,6 @@ fs.readdirSync('node_modules')
     nodeModules[mod] = 'commonjs ' + mod;
   });
 
-
 module.exports = {
     target: "node",
     devtool: 'eval-source-map',
@@ -26,6 +25,9 @@ module.exports = {
     },
     externals: nodeModules,
     module: {
+        preLoaders: [
+            { test: /\.json$/, loader: 'json'},
+        ],
         loaders: [
             {
                 test: /\.js$/,
@@ -36,5 +38,13 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+              'NODE_ENV': JSON.stringify('development'),
+              'BABEL_ENV': JSON.stringify('development')
+            }
+        })
+    ]
 };

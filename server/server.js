@@ -85,4 +85,5 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
   console.info('Blogr is running on', bind);
+  console.info('Environment', process.env);
 }

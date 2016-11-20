@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "build": "NODE_ENV=production BABEL_ENV=production webpack --config webpack.prod.config.js --profile --colors"
+    "build": "set NODE_ENV=production && set BABEL_ENV=production && webpack --config webpack.prod.config.js --profile --colors"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
     "debug": "^2.1.3",
     "express": "~4.12.2",
     "flux": "^2.1.1",
+    "json-loader": "^0.5.4",
     "method-override": "^2.3.5",
     "morgan": "~1.5.1",
     "pg-promise": "^4.2.9",
