@@ -30,10 +30,6 @@ node('master') {
            stage 'Test'
                 env.NODE_ENV = "test"
                 print "Environment will be: ${env.NODE_ENV}"
-                dir('server'){
-                    sh 'export API_URL=http://app-3.dragon.lan npm run test'
-                    sh 'export API_URL=http://app-4.dragon.lan npm run test'
-                }
 
            stage 'Build dist'
                 print "Build distribution files."
@@ -74,6 +70,10 @@ node('master') {
                 )
            stage 'Verify'
                 print "Verify that the build is working"
+                dir('server'){
+                    sh 'export API_URL=http://app-3.dragon.lan npm run test'
+                    sh 'export API_URL=http://app-4.dragon.lan npm run test'
+                }
 
            stage 'Deploy Prod'
                 print "Deploy to prod-servers."
