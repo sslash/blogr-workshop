@@ -30,6 +30,7 @@ node('master') {
            stage 'Test'
                 env.NODE_ENV = "test"
                 print "Environment will be: ${env.NODE_ENV}"
+                step([$class: 'JUnitResultArchiver', testResults: '**/test-results.xml'])
 
            stage 'Build dist'
                 print "Build distribution files."
@@ -73,6 +74,8 @@ node('master') {
                 dir('server'){
                     sh 'export API_URL=http://app-3.dragon.lan npm run test'
                     sh 'export API_URL=http://app-4.dragon.lan npm run test'
+
+                    step([$class: 'JUnitResultArchiver', testResults: '**/test-results.xml'])
                 }
 
            stage 'Deploy Prod'
