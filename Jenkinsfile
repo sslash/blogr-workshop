@@ -101,5 +101,5 @@ def deployTo(server){
     sh "ssh jenkins@${server} 'ln -s /opt/blogr/upload/${env.BUILD_NUMBER} /opt/blogr/latest'"
 
     sh "ssh jenkins@${server} 'rm /opt/blogr/upload/${env.BUILD_NUMBER}'/*.zip"
-    sh "ssh jenkins@${server} '/usr/sbin/service node-app start'"
+    sh "ssh jenkins@${server} '/usr/sbin/service node-app start &'"
 }
