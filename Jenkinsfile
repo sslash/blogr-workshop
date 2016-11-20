@@ -33,50 +33,46 @@ node('master') {
 //                step([$class: 'JUnitResultArchiver', testResults: '**/test-results.xml'])
 
            stage 'Build dist'
-                node{
-                    print "Build distribution files."
-                    parallel (
-                      npm_build_server: {
-                        dir('server'){
-                            sh 'npm run build'
-                            sh 'cp -r node_modules dist'
-                        }
-                      },
-                      npm_build_react: {
-                        dir('react'){
-                            sh 'npm run build'
-                        }
-                      }
-                    )
-
-                    parallel (
-                      zip_public: {
-                        zip archive: false, dir: 'public', glob: '**', zipFile: 'public.zip'
-                      },
-                      zip_client: {
-                        zip archive: false, dir: 'react/dist', glob: '**', zipFile: 'client.zip'
-                      },
-                      zip_server: {
-                        zip archive: false, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
-                      }
-                    )
-                }
-           stage 'Deploy QA'
-                node {
-                    print "Deploy to qa-servers."
-                    deployTo "app-3.dragon.lan"
-                    deployTo "app-4.dragon.lan"
-                }
-           stage 'Verify'
-                node {
-                    print "Verify that the build is working"
+                print "Build distribution files."
+                parallel (
+                  npm_build_server: {
                     dir('server'){
-                        sh 'export API_URL=http://app-3.dragon.lan npm run test'
-                        sh 'export API_URL=http://app-4.dragon.lan npm run test'
-
-                        step([$class: 'JUnitResultArchiver', testResults: '**/test-results.xml'])
+                        sh 'npm run build'
+                        sh 'cp -r node_modules dist'
                     }
+                  },
+                  npm_build_react: {
+                    dir('react'){
+                        sh 'npm run build'
+                    }
+                  }
+                )
+
+                parallel (
+                  zip_public: {
+                    zip archive: false, dir: 'public', glob: '**', zipFile: 'public.zip'
+                  },
+                  zip_client: {
+                    zip archive: false, dir: 'react/dist', glob: '**', zipFile: 'client.zip'
+                  },
+                  zip_server: {
+                    zip archive: false, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
+                  }
+                )
+           stage 'Deploy QA'
+                print "Deploy to qa-servers."
+                deployTo "app-3.dragon.lan"
+                deployTo "app-4.dragon.lan"
+
+           stage 'Verify'
+                print "Verify that the build is working"
+                dir('server'){
+                    sh 'export API_URL=http://app-3.dragon.lan npm run test'
+                    sh 'export API_URL=http://app-4.dragon.lan npm run test'
+
+                    step([$class: 'JUnitResultArchiver', testResults: '**/test-results.xml'])
                 }
+
            stage 'Deploy Prod'
                 print "Deploy to prod-servers."
                 archiveArtifacts artifacts: '*.zip', fingerprint: true
