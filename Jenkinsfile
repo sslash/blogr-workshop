@@ -88,6 +88,7 @@ node('master') {
 
 def deployTo(server){
     print "Deploy to ${server}"
+    sh "ssh jenkins@${server} '/usr/sbin/service node-app stop --force'"
     sh "ssh jenkins@${server} 'mkdir -p /opt/blogr/upload/${env.BUILD_NUMBER}'"
     sh "rsync -r server.zip jenkins@${server}:/opt/blogr/upload/${env.BUILD_NUMBER}/server.zip"
     sh "rsync -r client.zip jenkins@${server}:/opt/blogr/upload/${env.BUILD_NUMBER}/client.zip"
@@ -103,5 +104,5 @@ def deployTo(server){
     sh "ssh jenkins@${server} 'ln -s /opt/blogr/upload/${env.BUILD_NUMBER} /opt/blogr/latest'"
 
     sh "ssh jenkins@${server} 'rm /opt/blogr/upload/${env.BUILD_NUMBER}'/*.zip"
-    sh "ssh jenkins@${server} '/usr/sbin/service node-app restart --force'"
+    sh "ssh jenkins@${server} '/usr/sbin/service node-app start --force'"
 }
