@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "test": "mocha --colors",
+    "test": "mocha --colors --reporter mocha-junit-reporter",
     "build": "set NODE_ENV=production && set BABEL_ENV=production && webpack --config webpack.prod.config.js --profile --colors"
   },
   "repository": {
@@ -49,6 +49,7 @@
     "json-loader": "^0.5.3",
     "mocha": "^2.5.3",
     "mocha-jsdom": "^1.0.0",
+    "mocha-junit-reporter": "^1.12.1",
     "postcss-loader": "^0.6.0",
     "react-addons-test-utils": "^0.14.3",
     "react-transform-hmr": "^1.0.0",
