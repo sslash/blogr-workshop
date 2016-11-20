@@ -30,7 +30,10 @@ node('master') {
            stage 'Test'
                 env.NODE_ENV = "test"
                 print "Environment will be: ${env.NODE_ENV}"
-
+                dir('server'){
+                    sh 'API_URL=http://app-3.dragon.lan npm run test'
+                    sh 'API_URL=http://app-4.dragon.lan npm run test'
+                }
 
            stage 'Build dist'
                 print "Build distribution files."
