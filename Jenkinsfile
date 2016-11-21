@@ -72,7 +72,7 @@ node('master') {
                     sh 'API_URL=http://app-4.dragon.lan:3000 npm run test'
                 }
 
-                dir('react')
+                dir('react'){
                     print "Verify react frontend."
                     sh 'npm run e2e  -- --baseUrl http://app-3.dragon.lan:3000'
                     sh 'npm run e2e  -- --baseUrl http://app-4.dragon.lan:3000'
