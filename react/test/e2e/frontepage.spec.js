@@ -8,13 +8,11 @@ import sinonChai from 'sinon-chai';
 let expect = chai.expect;
 chai.use(sinonChai);
 
-describe('index', () => {
-  it('should load', () => {
+describe('frontpage', () => {
+  it('should have title Blogr', () => {
     browser.get('/');
-
-    browser.sleep(500).then(() => {
-      expect('1').to.equal('1');
-    })
+    browser.getTitle().then(function (title) {
+         expect(title).to.equal('Blogr');
+    });
   });
-
 });

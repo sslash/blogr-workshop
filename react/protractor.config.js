@@ -2,7 +2,7 @@
 'use strict';
 
 exports.config = {
-  specs: ['./test/e2e/**/*.js'],
+  specs: ['./test/e2e/**/*.spec.js'],
   capabilities: {
     browserName: 'chrome'
   },
