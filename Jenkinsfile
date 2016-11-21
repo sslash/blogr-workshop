@@ -67,16 +67,16 @@ node('master') {
            stage 'Verify'
                 print "Verify that the build is working"
                 dir('server'){
-                    print "Verify backend API"
-
+                    print "Verify server API"
                     sh 'API_URL=http://app-3.dragon.lan:3000 npm run test'
                     sh 'API_URL=http://app-4.dragon.lan:3000 npm run test'
+                }
 
-                    print "Verify frontend."
+                dir('react')
+                    print "Verify react frontend."
                     sh 'npm run e2e  -- --baseUrl http://app-3.dragon.lan:3000'
                     sh 'npm run e2e  -- --baseUrl http://app-4.dragon.lan:3000'
                 }
-
            stage 'Deploy Prod'
                 print "Deploy to prod-servers."
                 archiveArtifacts artifacts: '*.zip', fingerprint: true
