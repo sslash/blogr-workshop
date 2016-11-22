@@ -54,7 +54,7 @@ node('master') {
 
                 parallel (
                   zip_public: {
-                    zip archive: false, dir: 'public', glob: 'dist/**', zipFile: 'public.zip'
+                    zip archive: false, dir: 'public', glob: '**', zipFile: 'public.zip'
                   },
                   zip_client: {
                     zip archive: false, dir: 'react', glob: 'dist/**', zipFile: 'client.zip'
