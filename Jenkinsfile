@@ -36,10 +36,25 @@ node('master') {
                 env.NODE_ENV = "test"
                 print "Run Unit tests"
 
-                sh 'npm run test'
+                parallel (
+                  npm_test_server: {
+                    dir('server'){
+                        sh 'npm run test'
 
-                // save test results
-                step([$class: 'JUnitResultArchiver', testResults: 'test-results.xml'])
+                        // save test results
+                        step([$class: 'JUnitResultArchiver', testResults: 'test-results.xml'])
+                    }
+                  },
+                  npm_test_react: {
+                    dir('react'){
+                        sh 'npm run test'
+
+                        // save test results
+                        step([$class: 'JUnitResultArchiver', testResults: 'test-results.xml'])
+                    }
+                  }
+                )
+
            stage 'Build dist'
                 print "Build distribution files."
                 parallel (
@@ -76,8 +91,8 @@ node('master') {
                 print "Verify that the build is working"
                 dir('server'){
                     print "Verify server API"
-                    sh 'API_URL=http://app-3.dragon.lan:3000 npm run test'
-                    sh 'API_URL=http://app-4.dragon.lan:3000 npm run test'
+                    sh 'API_URL=http://app-3.dragon.lan:3000 npm run e2e'
+                    sh 'API_URL=http://app-4.dragon.lan:3000 npm run e2e'
 
                     // save test results
                     step([$class: 'JUnitResultArchiver', testResults: 'test-results.xml'])
