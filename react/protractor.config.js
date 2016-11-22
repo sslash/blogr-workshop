@@ -9,9 +9,12 @@ exports.config = {
       'phantomjs.cli.args': ['--web-security=false', '--ignore-ssl-errors=true', '--webdriver-loglevel=DEBUG'],
   },
   baseUrl: 'http://localhost:3000',
-  frameworks: ['mocha', 'chai'],
+  framework: 'mocha',
   onPrepare: function() {
     browser.ignoreSynchronization = true;
     require('babel-core/register');
+  },
+  mochaOpts: {
+    reporter: "spec",
   }
 };
