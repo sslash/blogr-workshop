@@ -74,15 +74,15 @@ node('master') {
                     print "Verify server API"
                     sh 'API_URL=http://app-3.dragon.lan:3000 npm run test'
                     sh 'API_URL=http://app-4.dragon.lan:3000 npm run test'
+
+                    // save test results
+                    step([$class: 'JUnitResultArchiver', testResults: 'test-results.xml'])
                 }
 
                 dir('react'){
                     print "Verify react frontend."
                     sh 'npm run e2e  -- --baseUrl http://app-3.dragon.lan:3000'
                     sh 'npm run e2e  -- --baseUrl http://app-4.dragon.lan:3000'
-
-                    // save test results
-                    step([$class: 'JUnitResultArchiver', testResults: '**/test-results.xml'])
                 }
            stage 'Deploy Prod'
                 print "Deploy to prod-servers."
