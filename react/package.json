@@ -6,7 +6,7 @@
     "start": "node dev-server.js",
     "build": "webpack --config webpack.prod.config.js --profile --colors",
     "e2e": "./node_modules/.bin/protractor protractor.config.js",
-    "test": "mocha --colors --reporter mocha-junit-reporter",
+    "test": "mocha --colors --reporter mocha-junit-reporter test/unit/**/*.js",
     "lint": "todo",
     "postinstall": "npm run webdriver-manager-update",
     "webdriver-manager-update": "./node_modules/.bin/webdriver-manager update"
