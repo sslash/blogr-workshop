@@ -54,6 +54,7 @@
     "mocha": "^2.5.3",
     "mocha-jsdom": "^1.0.0",
     "mocha-junit-reporter": "^1.12.1",
+    "phantomjs-prebuilt": "^2.1.13",
     "postcss-loader": "^0.6.0",
     "protractor": "^4.0.11",
     "react-addons-test-utils": "^0.14.3",
