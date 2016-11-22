@@ -35,7 +35,6 @@ node('master') {
            stage 'Test'
                 env.NODE_ENV = "test"
                 print "Environment will be: ${env.NODE_ENV}"
-//                step([$class: 'JUnitResultArchiver', testResults: '**/test-results.xml'])
 
            stage 'Build dist'
                 print "Build distribution files."
@@ -81,6 +80,9 @@ node('master') {
                     print "Verify react frontend."
                     sh 'npm run e2e  -- --baseUrl http://app-3.dragon.lan:3000'
                     sh 'npm run e2e  -- --baseUrl http://app-4.dragon.lan:3000'
+
+                    // save test results
+                    step([$class: 'JUnitResultArchiver', testResults: '**/test-results.xml'])
                 }
            stage 'Deploy Prod'
                 print "Deploy to prod-servers."
