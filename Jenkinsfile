@@ -6,8 +6,7 @@ node('master') {
         try {
            stage 'Prepare'
                 print "Prepare for building"
-                // cleanup workspace before build from old artifacts.
-                deleteDir()
+                sh 'find . -path "*/dist/*.zip" -exec rm -rf {} \;'
 
                 sh 'npm config set color always'
                 sh 'npm config set loglevel warn'
@@ -38,7 +37,6 @@ node('master') {
                   npm_build_server: {
                     dir('server'){
                         sh 'npm run build'
-                        sh 'cp -r node_modules dist'
                     }
                   },
                   npm_build_react: {
@@ -50,13 +48,13 @@ node('master') {
 
                 parallel (
                   zip_public: {
-                    zip archive: false, dir: 'public', glob: '**', zipFile: 'public.zip'
+                    zip archive: false, dir: 'public', glob: 'dist/*', zipFile: 'public.zip'
                   },
                   zip_client: {
-                    zip archive: false, dir: 'react/dist', glob: '**', zipFile: 'client.zip'
+                    zip archive: false, dir: 'react', glob: 'dist/*', zipFile: 'client.zip'
                   },
                   zip_server: {
-                    zip archive: false, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
+                    zip archive: false, dir: 'server', glob: 'node_modules/*,dist/*', zipFile: 'server.zip'
                   }
                 )
            stage 'Deploy QA'
@@ -106,5 +104,5 @@ def deployTo(server){
     sh "ssh jenkins@${server} 'ln -s /opt/blogr/upload/${env.BUILD_NUMBER} /opt/blogr/latest'"
 
     sh "ssh jenkins@${server} 'rm /opt/blogr/upload/${env.BUILD_NUMBER}'/*.zip"
-    sh "ssh jenkins@${server} '/usr/sbin/service node-app restart --force &> /dev/null'"
+    sh "ssh jenkins@${server} '/usr/sbin/service node-app start --force &> /dev/null'"
 }
