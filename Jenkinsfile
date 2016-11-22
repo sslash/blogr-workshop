@@ -6,7 +6,7 @@ node('master') {
         try {
            stage 'Prepare'
                 print "Prepare for building"
-                sh 'rm -f *.zip'
+                sh 'rm -rf *.zip'
                 dir('server'){
                     sh 'rm -rf dist/*'
                 }
@@ -43,6 +43,7 @@ node('master') {
                   npm_build_server: {
                     dir('server'){
                         sh 'npm run build'
+                        sh 'cp -r node_modules dist'
                     }
                   },
                   npm_build_react: {
@@ -57,10 +58,10 @@ node('master') {
                     zip archive: false, dir: 'public', glob: '**', zipFile: 'public.zip'
                   },
                   zip_client: {
-                    zip archive: false, dir: 'react', glob: 'dist/**', zipFile: 'client.zip'
+                    zip archive: false, dir: 'react/dist', glob: '**', zipFile: 'client.zip'
                   },
                   zip_server: {
-                    zip archive: false, dir: 'server', glob: 'node_modules/**,dist/**', zipFile: 'server.zip'
+                    zip archive: false, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
                   }
                 )
            stage 'Deploy QA'
