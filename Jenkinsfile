@@ -6,7 +6,7 @@ node('master') {
         try {
            stage 'Prepare'
                 print "Prepare for building"
-                sh 'rm -rf *.zip'
+                sh 'rm -f *.zip'
                 dir('server'){
                     sh 'rm -rf dist/*'
                 }
