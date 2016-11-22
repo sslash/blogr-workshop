@@ -6,7 +6,7 @@ node('master') {
         try {
            stage 'Prepare'
                 print "Prepare for building"
-                sh 'find . -path "*/dist/*.zip" -exec rm -rf {} \;'
+                sh 'find . -path \"*/dist/*.zip\" -exec rm -rf {} \\;'
 
                 sh 'npm config set color always'
                 sh 'npm config set loglevel warn'
