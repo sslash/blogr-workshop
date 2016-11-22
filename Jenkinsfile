@@ -7,6 +7,12 @@ node('master') {
            stage 'Prepare'
                 print "Prepare for building"
                 sh 'rm -f *.zip'
+                dir('server'){
+                    sh 'rm -rf dist/*'
+                }
+                dir('react'){
+                    sh 'rm -rf dist/*'
+                }
 
                 sh 'npm config set color always'
                 sh 'npm config set loglevel warn'
