@@ -4,6 +4,8 @@ node('master') {
     wrap([$class: 'AnsiColorBuildWrapper', 'colorMapName': 'XTerm', 'defaultFg': 1, 'defaultBg': 2]) {
 
         try {
+           mattermostSend message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} started."
+
            stage 'Prepare'
                 print "Prepare for building"
                 sh 'rm -f *.zip'
@@ -113,7 +115,9 @@ node('master') {
                 print "Deploy to prod-servers."
                 archiveArtifacts artifacts: '*.zip', fingerprint: true
 
+                mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} finished."
         }catch (err) {
+            mattermostSend color: "bad", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} FAILED."
             currentBuild.result = "FAILURE"
             throw err
         }
