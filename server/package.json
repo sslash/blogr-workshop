@@ -25,7 +25,8 @@
     "pg-promise": "^4.2.9",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
-    "serve-favicon": "~2.2.0"
+    "serve-favicon": "~2.2.0",
+    "umzug": "^1.11.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.0.3",
