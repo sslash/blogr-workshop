@@ -3,6 +3,8 @@
 var webpack = require('webpack');
 var path = require('path');
 var fs = require('fs');
+var git = require('git-rev-sync');
+var version = require('./package.json').version;
 
 var nodeModules = {};
 fs.readdirSync('node_modules')
@@ -41,8 +43,8 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
-            '__VERSION__': JSON.stringify('dev'),
-            '__HASH__': JSON.stringify('dev'),
+            '__VERSION__': JSON.stringify(version),
+            '__HASH__': JSON.stringify(git.short()),
             '__BUILD_NUMBER__': JSON.stringify('dev'),
             '__BUILD_TAG__': JSON.stringify('dev'),
             'process.env': {
