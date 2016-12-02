@@ -17,7 +17,7 @@ module.exports = {
     target: "node",
     devtool: 'eval-source-map',
     entry: [
-        path.join(__dirname, 'server.js')
+        './server.js'
     ],
     output: {
         path: path.join(__dirname, 'dist'),
@@ -41,9 +41,13 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
+            '__VERSION__': JSON.stringify('dev'),
+            '__HASH__': JSON.stringify('dev'),
+            '__BUILD_NUMBER__': JSON.stringify('dev'),
+            '__BUILD_TAG__': JSON.stringify('dev'),
             'process.env': {
-              'NODE_ENV': JSON.stringify('development'),
-              'BABEL_ENV': JSON.stringify('development')
+              'NODE_ENV': JSON.stringify('dev'),
+              'BABEL_ENV': JSON.stringify('dev')
             }
         })
     ]

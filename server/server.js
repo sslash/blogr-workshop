@@ -2,7 +2,7 @@
  * Module dependencies.
  */
 var app = require('./src/main');
-var debug = require('debug')('node-workshop:server');
+var debug = require('debug')('server');
 var http = require('http');
 
 http.globalAgent.maxSockets=512;
@@ -84,6 +84,4 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
-  console.info('Blogr is running on', bind);
-  console.info('Environment', process.env);
 }

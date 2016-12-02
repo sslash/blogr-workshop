@@ -1,4 +1,6 @@
 var express = require('express');
+var debug = require('debug')('server');
+var app = express();
 var dbConnection = require('./lib/dbConnection');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -8,11 +10,27 @@ var bodyParser = require('body-parser');
 var posts = require('./routes/posts');
 var system = require('./routes/system');
 var methodOverride = require('method-override');
-var app = express();
 
-// connect to postgres
+const info = {
+  version: __VERSION__,
+  hash: __HASH__,
+  build_number: __BUILD_NUMBER__,
+  build_tag: __BUILD_TAG__
+}
+
+debug("Info", info);
+debug('Connect to database');
 dbConnection.pingPostgres();
 
+debug('Migrate database');
+var Umzug = require('umzug');
+var umzug = new Umzug({});
+
+umzug.up().then(function (migrations) {
+
+});
+
+debug('Configure server');
 app.use(logger('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -23,6 +41,7 @@ app.use('/', express.static('../public'));
 app.use('/api', posts);
 app.use('/api', system);
 
+debug('Configure error handling');
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
     var err = new Error('Not Found');

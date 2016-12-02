@@ -10,7 +10,6 @@ module.exports = Object.assign(config, {
         'webpack-hot-middleware/client',
     ],
     plugins: [
-        // Webpack 1.0
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
