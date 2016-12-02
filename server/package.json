@@ -22,8 +22,6 @@
     "method-override": "^2.3.5",
     "morgan": "~1.5.1",
     "pg-promise": "^4.2.9",
-    "react": "^15.0.1",
-    "react-dom": "^15.0.1",
     "serve-favicon": "~2.2.0",
     "umzug": "^1.11.0"
   },
