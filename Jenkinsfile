@@ -64,6 +64,7 @@ node('master') {
                     dir('server'){
                         sh 'npm run build'
                         sh 'cp -r node_modules dist'
+                        sh 'cp -r migrations dist'
                     }
                   },
                   npm_build_react: {
