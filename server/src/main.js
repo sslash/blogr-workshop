@@ -19,18 +19,8 @@ const info = {
 }
 
 debug("Info", info);
-debug('Connect to database');
 dbConnection.pingPostgres();
-
-debug('Migrate database');
-var Umzug = require('umzug');
-var umzug = new Umzug(require('./config/umzug'));
-
-umzug.up().then(function (migrations) {
-   migrations.forEach(function(e) {
-    debug(`Run migration ${e.file}`);
-   });
-});
+dbConnection.migrateDb();
 
 debug('Configure Express');
 app.use(logger('combined'));

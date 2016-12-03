@@ -4,6 +4,8 @@ var debug = require('debug')('server');
 var db = pgp(config.db);
 
 function pingPostgres() {
+    debug('Ping postgres.');
+
     // ping service
     db.query(`SELECT 'DBD::Pg ping test'`)
     .then(() => {
@@ -15,7 +17,17 @@ function pingPostgres() {
     });
 }
 
+function migrateDb() {
+    debug('Migrate database');
+    umzug.up().then(function (migrations) {
+       migrations.forEach(function(e) {
+        debug(`Run migration ${e.file}`);
+       });
+    });
+}
+
 module.exports = {
-    pingPostgres: pingPostgres,
-    db: db
+    migrateDb,
+    pingPostgres
+    db
 }
