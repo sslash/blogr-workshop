@@ -12,4 +12,7 @@ module.exports = {
   storageOptions: {
     sequelize: sequelizeInstance,
   },
+  migrations: {
+    params: [sequelizeInstance.getQueryInterface(), Sequelize]
+  }
 };
