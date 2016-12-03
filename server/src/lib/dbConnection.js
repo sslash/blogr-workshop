@@ -2,6 +2,8 @@ var pgp = require('pg-promise')(/*options*/);
 var config = require('../config')
 var debug = require('debug')('server');
 var db = pgp(config.db);
+var Umzug = require('umzug');
+var umzug = new Umzug(require('../config/umzug'));
 
 function pingPostgres() {
     debug('Ping postgres.');
@@ -28,6 +30,6 @@ function migrateDb() {
 
 module.exports = {
     migrateDb,
-    pingPostgres
+    pingPostgres,
     db
 }
