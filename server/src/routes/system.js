@@ -9,14 +9,12 @@ const info = {
   build_tag: __BUILD_TAG__,
 }
 
-/*
 var Umzug = require('umzug');
 var umzug = new Umzug(require('../config/umzug'));
 let migrations = [];
 umzug.executed().then(function (m) {
   migrations = m.map(e => e.file );
 });
-*/
 
 router.get('/system/ping', function(req, res, next) {
     res.json({pong: true});
