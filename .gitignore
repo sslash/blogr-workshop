@@ -1,7 +1,8 @@
-.DS_Store
-bower_components
-build
-node_modules
+.DS_Store/
+bower_components/
+build/
+dist/
+node_modules/
 npm-debug.log
 *.sublime-workspace
 .idea
