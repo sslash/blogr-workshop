@@ -24,20 +24,15 @@ dbConnection.pingPostgres();
 
 debug('Migrate database');
 var Umzug = require('umzug');
-var umzug = new Umzug(require('./config/config'));
-umzug.executed().then(function (migrations) {
-   migrations.forEach(function(e) {
-    debug(`Already executed migration.`, e.file);
-   });
-});
+var umzug = new Umzug(require('./config/umzug'));
 
 umzug.up().then(function (migrations) {
    migrations.forEach(function(e) {
-    debug(`Migration run.`, e.file);
+    debug(`Run migration ${e.file}`);
    });
 });
 
-debug('Configure server');
+debug('Configure Express');
 app.use(logger('combined'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
