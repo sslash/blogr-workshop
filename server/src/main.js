@@ -24,10 +24,17 @@ dbConnection.pingPostgres();
 
 debug('Migrate database');
 var Umzug = require('umzug');
-var umzug = new Umzug({});
+var umzug = new Umzug(require('./config/config'));
+umzug.executed().then(function (migrations) {
+   migrations.forEach(function(e) {
+    debug(`Already executed migration.`, e.file);
+   });
+});
 
 umzug.up().then(function (migrations) {
-
+   migrations.forEach(function(e) {
+    debug(`Migration run.`, e.file);
+   });
 });
 
 debug('Configure server');
