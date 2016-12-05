@@ -11,40 +11,22 @@
  *  - updated
  *
  * http://docs.sequelizejs.com/en/latest/docs/models-definition/
+ * http://docs.sequelizejs.com/en/latest/docs/raw-queries/
+ * https://github.com/sequelize/cli
  */
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    return queryInterface.createTable('posts',
-        {
-            id: {
-              type: Sequelize.INTEGER,
-              primaryKey: true,
-              autoIncrement: true
-            },
-            created: {
-              type: Sequelize.DATE,
-              defaultValue: Sequelize.NOW,
-              allowNull: false
-            },
-            updated: {
-              type: Sequelize.DATE,
-              defaultValue: Sequelize.NOW,
-              allowNull: false
-            },
-            owner: {
-             type: Sequelize.STRING,
-             allowNull: false
-            },
-            title: {
-             type: Sequelize.TEXT,
-             allowNull: false
-            },
-            body: {
-             type: Sequelize.TEXT,
-             allowNull: false
-            }
-        }
-    );
+    const SQL = `create table IF NOT EXISTS posts (
+        id serial primary key,
+        title varchar(50) not null default '',
+        owner varchar(30) not null default '',
+        body varchar(1000) not null default '',
+        created timestamptz not null default now(),
+        updated timestamptz not null default now()
+    );`;
+
+    return queryInterface.sequelize.query(SQL,
+        { type: Sequelize.QueryTypes.RAW });
   },
 
   down: function (queryInterface, Sequelize) {
