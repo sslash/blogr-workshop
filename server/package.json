@@ -8,7 +8,9 @@
     "nodemon": "set NODE_ENV=dev && set BABEL_ENV=dev && nodemon -w dist dist/server.js",
     "test": "mocha --colors --reporter mocha-junit-reporter test/unit/**/*.js",
     "e2e": "mocha --colors --reporter mocha-junit-reporter test/e2e/**/*.js",
-    "build": "set NODE_ENV=production && set BABEL_ENV=production && webpack  -p -c --config webpack.prod.config.js"
+    "build": "set NODE_ENV=production && set BABEL_ENV=production && webpack  -p -c --config webpack.prod.config.js",
+    "version": "git add -A .",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
