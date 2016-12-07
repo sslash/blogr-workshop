@@ -151,8 +151,6 @@ def deployTo(server){
 def updateVersion(){
     print "Branch building: ${env.BRANCH_NAME}";
     if (env.BRANCH_NAME == 'master') {
-         sh 'git checkout master'
-
          dir('react'){
              print "Update version for react"
              sh 'npm version major'
