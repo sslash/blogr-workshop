@@ -63,8 +63,6 @@ node('master') {
                   npm_build_server: {
                     dir('server'){
                         sh 'npm run build'
-                        sh 'npm version minor --'
-
 
                         sh 'cp -r node_modules dist'
                         sh 'cp -r migrations dist'
