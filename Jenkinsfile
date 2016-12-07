@@ -164,8 +164,8 @@ def updateVersion(){
          }
 
          print 'Update repo with new version.'
-         sh "git push"
-         sh "git push --tags"
+         sh "git push origin master"
+         sh "git push origin master --tags"
     }
 }
 
