@@ -162,6 +162,7 @@ def updateVersion(){
 
          print 'Update repo with new version.'
          sh 'git add -A .'
+         sh 'git commit -m"new release"'
          sh "git push origin master"
          sh "git push origin master --tags"
     }
