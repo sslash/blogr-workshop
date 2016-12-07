@@ -7,5 +7,5 @@ npm-debug.log
 .idea
 .env
 dist/
-*.xml
-*.zip
+**/*.xml
+**/*.zip
