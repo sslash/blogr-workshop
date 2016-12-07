@@ -6,4 +6,6 @@ npm-debug.log
 *.sublime-workspace
 .idea
 .env
-**/dist/
+dist/
+*.xml
+*.zip
