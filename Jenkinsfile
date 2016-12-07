@@ -63,6 +63,9 @@ node('master') {
                   npm_build_server: {
                     dir('server'){
                         sh 'npm run build'
+                        sh 'npm version minor --'
+
+
                         sh 'cp -r node_modules dist'
                         sh 'cp -r migrations dist'
                     }
@@ -116,6 +119,7 @@ node('master') {
                 print "Deploy to prod-servers."
                 archiveArtifacts artifacts: '*.zip', fingerprint: true
 
+                updateVersion()
                 mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} finished."
         }catch (err) {
             mattermostSend color: "bad", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} FAILED."
@@ -144,4 +148,17 @@ def deployTo(server){
 
     sh "ssh jenkins@${server} 'rm /opt/blogr/upload/${env.BUILD_NUMBER}'/*.zip"
     sh "ssh jenkins@${server} '/usr/sbin/service node-app start --force &> /dev/null'"
+}
+
+def updateVersion(){
+    if (env.BRANCH_NAME == 'master') {
+         sh "git remote set-url origin git@github.com:dniel/blogr-workshop.git"
+
+         print "Update version."
+         sh 'npm version major'
+
+         print 'Update repo with new version.'
+         sh "git push"
+         sh "git push --tags"
+    }
 }
