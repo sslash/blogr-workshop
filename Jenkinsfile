@@ -20,10 +20,8 @@ node('master') {
                 sh 'node -v'
 
                 checkout scm
-/*
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']],
-                    extensions: [[$class: 'LocalBranch', localBranch: "master"]]])
-*/
+//                checkout([$class: 'GitSCM', branches: [[name: '*/master']],
+//                    extensions: [[$class: 'LocalBranch', localBranch: "master"]]])
                 parallel (
                   npm_install_server: {
                     dir('server'){
