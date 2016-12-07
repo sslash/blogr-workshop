@@ -20,8 +20,6 @@ node('master') {
                 sh 'node -v'
 
                 checkout scm
-//                checkout([$class: 'GitSCM', branches: [[name: '*/master']],
-//                    extensions: [[$class: 'LocalBranch', localBranch: "master"]]])
                 parallel (
                   npm_install_server: {
                     dir('server'){
@@ -151,7 +149,10 @@ def deployTo(server){
 def updateVersion(){
     print "Branch building: ${env.BRANCH_NAME}";
     if (env.BRANCH_NAME == 'master') {
-         dir('react'){
+        checkout([$class: 'GitSCM', branches: [[name: 'origin/master']],
+            extensions: [[$class: 'LocalBranch', localBranch: "master"]]])
+
+        dir('react'){
              print "Update version for react"
              sh 'npm version major'
          }
