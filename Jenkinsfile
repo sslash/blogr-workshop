@@ -22,7 +22,7 @@ node('master') {
 
                 checkout scm
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']],
-                    extensions: [[$class: 'CleanCheckout'],[$class: 'LocalBranch', localBranch: "master"]]])
+                    extensions: [[$class: 'LocalBranch', localBranch: "master"]]])
 
                 parallel (
                   npm_install_server: {
