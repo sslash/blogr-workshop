@@ -21,6 +21,8 @@ node('master') {
                 sh 'node -v'
 
                 checkout scm
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']],
+                    extensions: [[$class: 'CleanCheckout'],[$class: 'LocalBranch', localBranch: "master"]]])
 
                 parallel (
                   npm_install_server: {
@@ -165,4 +167,10 @@ def updateVersion(){
          sh "git push"
          sh "git push --tags"
     }
+}
+
+// Parse the package.json and extract the version information.
+def version() {
+    def matcher = readFile('package.json') =~ '"version": "(.+)-.*",'
+    matcher ? matcher[0][1].tokenize(".") : null
 }
