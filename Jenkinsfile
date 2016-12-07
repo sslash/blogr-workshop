@@ -7,6 +7,9 @@ node('master') {
 
            stage 'Prepare'
                 print "Prepare for building"
+                sh 'git config --global user.name "Jenkins"'
+                sh 'git config --global user.email jenkins@dragon.lan'
+
                 sh 'rm -f *.zip'
                 dir('server'){
                     sh 'rm -rf dist/*'
