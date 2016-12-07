@@ -1,7 +1,7 @@
 node('master') {
     currentBuild.result = "SUCCESS"
 
-    ansiColor('XTerm'){
+    ansiColor('xterm') {
         try {
            mattermostSend message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} started."
 
@@ -149,7 +149,7 @@ def deployTo(server){
 }
 
 def updateVersion(){
-    console.log("Branch building: ${env.BRANCH_NAME}");
+    print "Branch building: ${env.BRANCH_NAME}";
     if (env.BRANCH_NAME == 'master') {
          sh 'git checkout master'
 
