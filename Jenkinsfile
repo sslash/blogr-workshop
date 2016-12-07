@@ -152,7 +152,7 @@ def deployTo(server){
 
 def updateVersion(){
     if (env.BRANCH_NAME == 'master') {
-         sh "git remote set-url origin git@github.com:dniel/blogr-workshop.git"
+         sh `git checkout ${env.BRANCH_NAME}`
 
          dir('react'){
              print "Update version for react"
