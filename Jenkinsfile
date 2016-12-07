@@ -154,8 +154,14 @@ def updateVersion(){
     if (env.BRANCH_NAME == 'master') {
          sh "git remote set-url origin git@github.com:dniel/blogr-workshop.git"
 
-         print "Update version."
-         sh 'npm version major'
+         dir('react'){
+             print "Update version for react"
+             sh 'npm version major'
+         }
+         dir('server'){
+             print "Update version for server"
+             sh 'npm version major'
+         }
 
          print 'Update repo with new version.'
          sh "git push"
