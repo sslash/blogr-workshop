@@ -10,8 +10,6 @@
     "lint": "todo",
     "postinstall": "npm run webdriver-manager-update",
     "webdriver-manager-update": "./node_modules/.bin/webdriver-manager update",
-    "version": "git add -A .",
-    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",

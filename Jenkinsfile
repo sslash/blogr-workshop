@@ -152,17 +152,22 @@ def deployTo(server){
 def updateVersion(){
     print "Branch building: ${env.BRANCH_NAME}";
     if (env.BRANCH_NAME == 'master') {
-        checkout([$class: 'GitSCM', branches: [[name: 'origin/master']],
-            extensions: [[$class: 'LocalBranch', localBranch: "master"]]])
+        sh 'git checkout -b temp'
 
         dir('react'){
              print "Update version for react"
              sh 'npm version major'
-         }
-         dir('server'){
+        }
+        dir('server'){
              print "Update version for server"
              sh 'npm version major'
-         }
+        }
+
+        sh 'git checkout master'
+        sh 'git merge temp'
+        sh 'git push origin master'
+        sh 'git push --tags origin master'
+        sh 'git branch -d temp'
     }
 }
 
