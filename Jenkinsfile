@@ -116,8 +116,10 @@ node('master') {
                 }
            stage 'Deploy Prod'
                 print "Deploy to prod-servers."
+                timeout(time: 1, unit: 'HOURS') {
+                  input 'Deploy to Production?'
+                }
                 archiveArtifacts artifacts: '*.zip', fingerprint: true
-
                 updateVersion()
                 mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} finished."
         }catch (err) {
