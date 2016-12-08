@@ -154,30 +154,26 @@ def updateVersion(){
    try {
        if (env.BRANCH_NAME == 'master') {
             sh 'git checkout -b temp'
-
+            def VERSION = ""
             dir('react'){
                  VERSION = sh (
                      script: 'npm version major',
                      returnStdout: true
                  ).trim()
-                 print "React updated to version ${VERSION}"
             }
             dir('server'){
-                 VERSION = sh (
-                     script: 'npm version major',
-                     returnStdout: true
-                 ).trim()
-                 print "Server updated to version ${VERSION}"
+                sh 'npm version major'
             }
+            print "Blogr updated to version ${VERSION}"
 
             sh 'git add -A .'
-            sh "git commit -m\"Release version ${VERSION}\""
-            sh "git tag ${VERSION}"
+            sh "git commit -m\"New release ${VERSION}\""
 
             sh 'git checkout master'
             sh 'git merge temp'
-
             sh 'git push origin master'
+
+            sh "git tag -a ${VERSION} -m \"my version ${VERSION}\""
             sh 'git push --tags origin master'
         }
     }finally {
