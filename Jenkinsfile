@@ -150,32 +150,38 @@ def deployTo(server){
 }
 
 def updateVersion(){
-    print "Branch building: ${env.BRANCH_NAME}";
-    if (env.BRANCH_NAME == 'master') {
-        sh 'git checkout -b temp'
+   print "Branch building: ${env.BRANCH_NAME}";
+   try {
+       if (env.BRANCH_NAME == 'master') {
+            sh 'git checkout -b temp'
 
-        dir('react'){
-             print "Update version for react"
-             VERSION = sh (
-                 script: 'npm version major',
-                 returnStdout: true
-             ).trim()
-             print "Updated to version ${VERSION}"
-        }
-        dir('server'){
-             print "Update version for server"
-             VERSION = sh (
-                 script: 'npm version major',
-                 returnStdout: true
-             ).trim()
-             print "Updated to version ${VERSION}"
-        }
+            dir('react'){
+                 VERSION = sh (
+                     script: 'npm version major',
+                     returnStdout: true
+                 ).trim()
+                 print "React updated to version ${VERSION}"
+            }
+            dir('server'){
+                 VERSION = sh (
+                     script: 'npm version major',
+                     returnStdout: true
+                 ).trim()
+                 print "Server updated to version ${VERSION}"
+            }
 
-        sh 'git checkout master'
-        sh 'git merge temp'
-        sh 'git push origin master'
-        sh 'git push --tags origin master'
-        sh 'git branch -d temp'
+            sh 'git add -A .'
+            sh 'git commit -m\"Release version ${VERSION}\"'
+            sh 'git tag ${VERSION}'
+
+            sh 'git checkout master'
+            sh 'git merge temp'
+
+            sh 'git push origin master'
+            sh 'git push --tags origin master'
+        }
+    }finally {
+      sh 'git branch -d temp'
     }
 }
 
