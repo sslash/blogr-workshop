@@ -156,11 +156,19 @@ def updateVersion(){
 
         dir('react'){
              print "Update version for react"
-             sh 'npm version major'
+             VERSION = sh (
+                 script: 'npm version major',
+                 returnStdout: true
+             ).trim()
+             print "Updated to version ${version}"
         }
         dir('server'){
              print "Update version for server"
-             sh 'npm version major'
+             VERSION = sh (
+                 script: 'npm version major',
+                 returnStdout: true
+             ).trim()
+             print "Updated to version ${version}"
         }
 
         sh 'git checkout master'
@@ -173,6 +181,6 @@ def updateVersion(){
 
 // Parse the package.json and extract the version information.
 def version() {
-    def matcher = readFile('package.json') =~ '"version": "(.+)-.*",'
-    matcher ? matcher[0][1].tokenize(".") : null
+    def matcher = readFile('package.json') =~ '"version":."(.+)"'
+    matcher ? matcher[0][1] : null
 }
