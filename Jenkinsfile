@@ -160,7 +160,7 @@ def updateVersion(){
                  script: 'npm version major',
                  returnStdout: true
              ).trim()
-             print "Updated to version ${version}"
+             print "Updated to version ${VERSION}"
         }
         dir('server'){
              print "Update version for server"
@@ -168,7 +168,7 @@ def updateVersion(){
                  script: 'npm version major',
                  returnStdout: true
              ).trim()
-             print "Updated to version ${version}"
+             print "Updated to version ${VERSION}"
         }
 
         sh 'git checkout master'
