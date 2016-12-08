@@ -171,8 +171,8 @@ def updateVersion(){
             }
 
             sh 'git add -A .'
-            sh 'git commit -m\"Release version ${VERSION}\"'
-            sh 'git tag ${VERSION}'
+            sh "git commit -m\"Release version ${VERSION}\""
+            sh "git tag ${VERSION}"
 
             sh 'git checkout master'
             sh 'git merge temp'
