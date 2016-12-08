@@ -9,7 +9,7 @@
     "test": "mocha --colors --reporter mocha-junit-reporter test/unit/**/*.js",
     "lint": "todo",
     "postinstall": "npm run webdriver-manager-update",
-    "webdriver-manager-update": "./node_modules/.bin/webdriver-manager update",
+    "webdriver-manager-update": "./node_modules/.bin/webdriver-manager update"
   },
   "repository": {
     "type": "git",
