@@ -156,7 +156,29 @@ def updateVersion(){
    print "Branch building: ${env.BRANCH_NAME}";
    try {
        if (env.BRANCH_NAME == 'master') {
-            sh 'git checkout -b temp'
+//            sh 'git checkout -b temp'
+//            def VERSION = ""
+//            dir('react'){
+//                 VERSION = sh (
+//                     script: 'npm version major',
+//                     returnStdout: true
+//                 ).trim()
+//            }
+//            dir('server'){
+//                sh 'npm version major'
+//            }
+//            print "Blogr updated to version ${VERSION}"
+//
+//            sh 'git add -A .'
+//            sh "git commit -m\"New release ${VERSION}\""
+//
+//            sh 'git checkout master'
+//            sh 'git merge temp'
+//            sh 'git push origin master'
+
+//            sh "git tag -a ${VERSION} -m \"my version ${VERSION}\""
+//            sh 'git push --tags origin master'
+
             def VERSION = ""
             dir('react'){
                  VERSION = sh (
@@ -167,20 +189,19 @@ def updateVersion(){
             dir('server'){
                 sh 'npm version major'
             }
-            print "Blogr updated to version ${VERSION}"
 
-            sh 'git add -A .'
-            sh "git commit -m\"New release ${VERSION}\""
-
-            sh 'git checkout master'
-            sh 'git merge temp'
-            sh 'git push origin master'
-
-            sh "git tag -a ${VERSION} -m \"my version ${VERSION}\""
-            sh 'git push --tags origin master'
+            def branch = env.BRANCH_NAME
+            def commitMsg = "New release ${VERSION}"
+            def tagName = VERSION
+            sh """ git add . && git commit -m \"${commitMsg}\" || true
+                   git push origin HEAD:refs/heads/${branch} || true
+               """
+            sh """ git tag -fa \"${tagName}\" -m \"${commitMsg}\"
+                   git push -f origin refs/tags/${tagName}:refs/tags/${tagName}
+               """
         }
     }finally {
-      sh 'git branch -d temp'
+      // sh 'git branch -d temp'
     }
 }
 
