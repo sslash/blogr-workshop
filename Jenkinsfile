@@ -1,9 +1,20 @@
+#!groovy
+/**
+ * Help for the DSL and keywords and syntax.
+ * http://10.0.1.203/job/blogr-build-job/job/master/pipeline-syntax/
+ */
 node() {
     currentBuild.result = "SUCCESS"
     ansiColor('xterm') {
         try {
             mattermostSend message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} started."
 
+            /**
+             * Prepare build.
+             * Some cleanup of workspace, set variables.
+             * Log some info so that its easy to see if something is wrong
+             * in the environment if you inspect the job output.
+             */
             stage('Prepare') {
                 print "Prepare for building"
                 sh 'git config --global user.name "Jenkins"'
@@ -36,6 +47,10 @@ node() {
                 )
             }
 
+            /**
+             * Run Automated Unit tests that are not depending on real
+             * services, instead they should use mocks for remote services.
+             */
             stage('Test') {
                 env.NODE_ENV = "test"
                 print "Run Unit tests"
@@ -46,7 +61,7 @@ node() {
                                 sh 'npm run test'
 
                                 // save test results
-                                step([$class: 'JUnitResultArchiver', testResults: 'test-results.xml'])
+                                junit 'test-results.xml'
                             }
                         },
                         npm_test_react: {
@@ -54,12 +69,17 @@ node() {
                                 sh 'npm run test'
 
                                 // save test results
-                                step([$class: 'JUnitResultArchiver', testResults: 'test-results.xml'])
+                                junit 'test-results.xml'
                             }
                         }
                 )
             }
 
+            /**
+             * Create distribution files.
+             * Build the package that should be uploaded to the
+             * servers and kept for release history.
+             */
             stage('Build') {
                 print "Build distribution files."
                 parallel(
@@ -91,12 +111,31 @@ node() {
                 )
             }
 
+            /**
+             * Deploy the distributionsfiles to the dev-servers.
+             */
             stage('Deploy Dev') {
                 print "Deploy to dev-servers."
                 //deployTo "app-????.dragon.lan"
                 mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} deployed to dev."
             }
 
+            /**
+             * Deploy the distributionsfiles to the qa-servers.
+             * After this step, the same artifacts should be used and
+             * the source code been tagged so that its easy to se
+             * when running acceptance test that it is the same
+             * running code used both in tests and later in production.
+             *
+             * The reason why the version is bumped already here is
+             * that I want the last release step to be so simple,
+             * just move the files to the server. Everything else
+             * like version bumping, source code pusing and more
+             * is already done in the release to QA stage to minimize
+             * risk when deploying into production.
+             * I dont want to sit at 6am with a merge conflict on
+             * release day. :)
+             */
             stage('Deploy QA') {
                 print "Deploy to qa-servers."
                 timeout(time: 1, unit: 'HOURS') {
@@ -110,17 +149,29 @@ node() {
                 mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} - New version ${newVersion} deployed to test."
             }
 
+            /**
+             * Verify the deployment.
+             * Perform the acceptance test, automated and manually.
+             * If the release is accepted then perform release into
+             * production.
+             *
+             * Automated End-To-End tests are done running against
+             * the QA-servers.
+             */
             stage('Verify') {
                 print "Verify that the build is working"
+
+                // Run Live end-to-end tests to the backend API.
                 dir('server') {
                     print "Verify server API"
                     sh 'API_URL=http://app-3.dragon.lan:3000 npm run e2e'
                     sh 'API_URL=http://app-4.dragon.lan:3000 npm run e2e'
 
                     // save test results
-                    step([$class: 'JUnitResultArchiver', testResults: 'test-results.xml'])
+                    junit 'test-results.xml'
                 }
 
+                // Run Live selenium tests to the frontend.
                 dir('react') {
                     print "Verify react frontend."
                     sh 'npm run e2e  -- --baseUrl http://app-3.dragon.lan:3000'
@@ -128,6 +179,11 @@ node() {
                 }
             }
 
+            /**
+             * Deploy distribution to production.
+             * This is a very simple stage, if on master
+             * and accept deploy to production, just copy the files to the servers.
+             */
             stage('Deploy Prod') {
                 print "Deploy to prod-servers."
                 if (env.BRANCH_NAME == 'master') {
