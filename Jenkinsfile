@@ -130,11 +130,16 @@ node() {
              * The reason why the version is bumped already here is
              * that I want the last release step to be so simple,
              * just move the files to the server. Everything else
-             * like version bumping, source code pusing and more
+             * like version bumping, source code pushing and more
              * is already done in the release to QA stage to minimize
              * risk when deploying into production.
              * I dont want to sit at 6am with a merge conflict on
-             * release day. :)
+             * release day. :) When deployed to QA the distribution
+             * files has been finished. The gold-master dist created.
+             * No more work on the source code, or the source control
+             * needs to be done. The distribution files sits in the
+             * workspace and await acceptance testing to be completed.
+             *
              */
             stage('Deploy QA') {
                 print "Deploy to qa-servers."
@@ -262,10 +267,6 @@ def updateVersion() {
            """
 
         return VERSION;
-}
-
-def pushVersion(){
-
 }
 
 // Parse the package.json and extract the version information.
