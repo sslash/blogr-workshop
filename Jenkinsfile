@@ -1,11 +1,10 @@
-node('master') {
+node() {
     currentBuild.result = "SUCCESS"
-
     ansiColor('xterm') {
         try {
            mattermostSend message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} started."
 
-           stage 'Prepare'
+           stage('Prepare'){
                 print "Prepare for building"
                 sh 'git config --global user.name "Jenkins"'
                 sh 'git config --global user.email jenkins@dragon.lan'
@@ -35,7 +34,9 @@ node('master') {
                     }
                   }
                 )
-           stage 'Test'
+           }
+
+           stage('Test'){
                 env.NODE_ENV = "test"
                 print "Run Unit tests"
 
@@ -57,8 +58,9 @@ node('master') {
                     }
                   }
                 )
+           }
 
-           stage 'Build dist'
+           stage('Build dist'){
                 print "Build distribution files."
                 parallel (
                   npm_build_server: {
@@ -87,7 +89,9 @@ node('master') {
                     zip archive: false, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
                   }
                 )
-           stage 'Deploy QA'
+           }
+
+           stage('Deploy QA'){
                 print "Deploy to qa-servers."
                 parallel (
                   deploy_to_app3: {
@@ -97,8 +101,9 @@ node('master') {
                     deployTo "app-4.dragon.lan"
                   }
                 )
+           }
 
-           stage 'Verify'
+           stage('Verify'){
                 print "Verify that the build is working"
                 dir('server'){
                     print "Verify server API"
@@ -114,19 +119,23 @@ node('master') {
                     sh 'npm run e2e  -- --baseUrl http://app-3.dragon.lan:3000'
                     sh 'npm run e2e  -- --baseUrl http://app-4.dragon.lan:3000'
                 }
-           stage 'Deploy Prod'
+           }
+
+           stage('Deploy Prod'){
                 print "Deploy to prod-servers."
                 timeout(time: 1, unit: 'HOURS') {
                   input 'Deploy to Production?'
                 }
                 archiveArtifacts artifacts: '*.zip', fingerprint: true
-                updateVersion()
-                mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} finished."
+                newVersion = updateVersion()
+                mattermostSend color: "good", message: "${env.JOB_NAME} - :star: Build ${env.BUILD_NUMBER} - New version ${newVersion} released in production :exclamation:"
+           }
         }catch (err) {
-            mattermostSend color: "bad", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} FAILED."
+            mattermostSend color: "bad", message: "${env.JOB_NAME} - :-1: Build ${env.BUILD_NUMBER} FAILED."
             currentBuild.result = "FAILURE"
             throw err
         }
+        mattermostSend color: "good", message: "${env.JOB_NAME} - :+1: Build ${env.BUILD_NUMBER} finished."
     }
 }
 
@@ -154,54 +163,32 @@ def deployTo(server){
 // check out https://gist.github.com/amaksoft/b17408303d69c71498eaa39ea2ee3b01
 def updateVersion(){
    print "Branch building: ${env.BRANCH_NAME}";
-   try {
-       if (env.BRANCH_NAME == 'master') {
-//            sh 'git checkout -b temp'
-//            def VERSION = ""
-//            dir('react'){
-//                 VERSION = sh (
-//                     script: 'npm version major',
-//                     returnStdout: true
-//                 ).trim()
-//            }
-//            dir('server'){
-//                sh 'npm version major'
-//            }
-//            print "Blogr updated to version ${VERSION}"
-//
-//            sh 'git add -A .'
-//            sh "git commit -m\"New release ${VERSION}\""
-//
-//            sh 'git checkout master'
-//            sh 'git merge temp'
-//            sh 'git push origin master'
-
-//            sh "git tag -a ${VERSION} -m \"my version ${VERSION}\""
-//            sh 'git push --tags origin master'
-
-            def VERSION = ""
-            dir('react'){
-                 VERSION = sh (
-                     script: 'npm version major',
-                     returnStdout: true
-                 ).trim()
-            }
-            dir('server'){
-                sh 'npm version major'
-            }
-
-            def branch = env.BRANCH_NAME
-            def commitMsg = "New release ${VERSION}"
-            def tagName = VERSION
-            sh """ git add . && git commit -m \"${commitMsg}\" || true
-                   git push origin HEAD:refs/heads/${branch} || true
-               """
-            sh """ git tag -fa \"${tagName}\" -m \"${commitMsg}\"
-                   git push -f origin refs/tags/${tagName}:refs/tags/${tagName}
-               """
+   if (env.BRANCH_NAME == 'master') {
+        def VERSION = ""
+        dir('react'){
+             VERSION = sh (
+                 script: 'npm version major',
+                 returnStdout: true
+             ).trim()
         }
-    }finally {
-      // sh 'git branch -d temp'
+        dir('server'){
+            sh 'npm version major'
+        }
+
+        def branch = env.BRANCH_NAME
+        def commitMsg = "New release ${VERSION}"
+        def tagName = VERSION
+        sh """ git add . && git commit -m \"${commitMsg}\" || true
+               git push origin HEAD:refs/heads/${branch} || true
+           """
+        sh """ git tag -fa \"${tagName}\" -m \"${commitMsg}\"
+               git push -f origin refs/tags/${tagName}:refs/tags/${tagName}
+           """
+
+        return VERSION;
+    }else{
+        // fail this job
+        throw new RuntimeException("it is not allowed to update version if not on master branch.")
     }
 }
 
