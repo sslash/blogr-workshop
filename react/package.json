@@ -1,6 +1,6 @@
 {
-  "name": "node-workshop",
-  "version": "9.0.0",
+  "name": "react",
+  "version": "10.0.0",
   "private": true,
   "scripts": {
     "start": "node dev-server.js",

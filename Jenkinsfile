@@ -126,10 +126,13 @@ node() {
                 timeout(time: 1, unit: 'HOURS') {
                   input 'Deploy to Production?'
                 }
+
+                updateVersion()
                 archiveArtifacts artifacts: '*.zip', fingerprint: true
 
                 dir('react') {
                     newVersion = parseVersion()
+                    print "New version ${newVersion} released in production!"
                     mattermostSend color: "good", message: "${env.JOB_NAME} - :star: Build ${env.BUILD_NUMBER} - New version ${newVersion} released in production :exclamation:"
                 }
            }
