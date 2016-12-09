@@ -93,7 +93,7 @@ node() {
 
             stage('Deploy Dev') {
                 print "Deploy to dev-servers."
-                deployTo "app-3.dragon.lan"
+                //deployTo "app-????.dragon.lan"
                 mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} deployed to dev."
             }
 
