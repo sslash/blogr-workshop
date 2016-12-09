@@ -146,7 +146,12 @@ node() {
                 archiveArtifacts artifacts: '*.zip', fingerprint: true
 
                 deployTo "app-3.dragon.lan"
-                mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} - New version ${newVersion} deployed to test."
+
+                dir('react') {
+                    newVersion = parseVersion()
+                    print "New version ${newVersion} released in qa."
+                    mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} - New version ${newVersion} released to qa-servers."
+                }
             }
 
             /**
