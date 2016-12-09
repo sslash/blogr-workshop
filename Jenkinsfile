@@ -130,15 +130,21 @@ node() {
 
             stage('Deploy Prod') {
                 print "Deploy to prod-servers."
-                timeout(time: 1, unit: 'HOURS') {
-                    input 'Deploy to Production?'
-                }
+                if (env.BRANCH_NAME == 'master') {
+                    timeout(time: 1, unit: 'HOURS') {
+                        input 'Deploy to Production?'
+                    }
 
-                deployTo "app-4.dragon.lan"
-                dir('react') {
-                    newVersion = parseVersion()
-                    print "New version ${newVersion} released in production!"
-                    mattermostSend color: "good", message: "${env.JOB_NAME} - :star: Build ${env.BUILD_NUMBER} - New version ${newVersion} released to production :exclamation:"
+                    deployTo "app-4.dragon.lan"
+                    dir('react') {
+                        newVersion = parseVersion()
+                        print "New version ${newVersion} released in production!"
+                        mattermostSend color: "good", message: "${env.JOB_NAME} - :star: Build ${env.BUILD_NUMBER} - New version ${newVersion} released to production :exclamation:"
+                    }
+                }else{
+                    timeout(time: 0, unit: 'SECONDS') {
+                        input 'Deploy to Production?'
+                    }
                 }
             }
         } catch (err) {
@@ -171,10 +177,8 @@ def deployTo(server) {
     sh "ssh jenkins@${server} '/usr/sbin/service node-app start --force &> /dev/null'"
 }
 
-// check out https://gist.github.com/amaksoft/b17408303d69c71498eaa39ea2ee3b01
 def updateVersion() {
     print "Branch building: ${env.BRANCH_NAME}";
-    if (env.BRANCH_NAME == 'master') {
         def VERSION = ""
         dir('react') {
             VERSION = sh(
@@ -197,10 +201,10 @@ def updateVersion() {
            """
 
         return VERSION;
-    } else {
-        // fail this job
-        throw new RuntimeException("it is not allowed to update version if not on master branch.")
-    }
+}
+
+def pushVersion(){
+
 }
 
 // Parse the package.json and extract the version information.
