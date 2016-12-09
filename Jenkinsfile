@@ -127,8 +127,11 @@ node() {
                   input 'Deploy to Production?'
                 }
                 archiveArtifacts artifacts: '*.zip', fingerprint: true
-                newVersion = parseVersion()
-                mattermostSend color: "good", message: "${env.JOB_NAME} - :star: Build ${env.BUILD_NUMBER} - New version ${newVersion} released in production :exclamation:"
+
+                dir('react') {
+                    newVersion = parseVersion()
+                    mattermostSend color: "good", message: "${env.JOB_NAME} - :star: Build ${env.BUILD_NUMBER} - New version ${newVersion} released in production :exclamation:"
+                }
            }
         }catch (err) {
             mattermostSend color: "bad", message: "${env.JOB_NAME} - :-1: Build ${env.BUILD_NUMBER} FAILED."
