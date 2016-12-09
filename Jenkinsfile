@@ -127,7 +127,7 @@ node() {
                   input 'Deploy to Production?'
                 }
                 archiveArtifacts artifacts: '*.zip', fingerprint: true
-                newVersion = updateVersion()
+                newVersion = parseVersion()
                 mattermostSend color: "good", message: "${env.JOB_NAME} - :star: Build ${env.BUILD_NUMBER} - New version ${newVersion} released in production :exclamation:"
            }
         }catch (err) {
@@ -193,7 +193,7 @@ def updateVersion(){
 }
 
 // Parse the package.json and extract the version information.
-def version() {
+def parseVersion() {
     def matcher = readFile('package.json') =~ '"version":."(.+)"'
     matcher ? matcher[0][1] : null
 }
