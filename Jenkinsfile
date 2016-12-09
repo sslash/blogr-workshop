@@ -151,6 +151,7 @@ def deployTo(server){
     sh "ssh jenkins@${server} '/usr/sbin/service node-app start --force &> /dev/null'"
 }
 
+// check out https://gist.github.com/amaksoft/b17408303d69c71498eaa39ea2ee3b01
 def updateVersion(){
    print "Branch building: ${env.BRANCH_NAME}";
    try {
