@@ -5,7 +5,6 @@ var router = express.Router();
 const info = {
   version: __VERSION__,
   hash: __HASH__,
-  tag: __TAG__,
   branch: __BRANCH__,
   build_number: __BUILD_NUMBER__,
   build_tag: __BUILD_TAG__
