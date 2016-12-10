@@ -5,8 +5,6 @@ var path = require('path');
 var fs = require('fs');
 var git = require('git-rev-sync');
 var version = require('./package.json').version;
-var childProcess = require('child_process'),
-GIT_TAG = childProcess.execSync('git describe --exact-match || echo \"no tag found\"').toString();
 
 var nodeModules = {};
 fs.readdirSync('node_modules')
@@ -49,7 +47,6 @@ module.exports = {
             '__HASH__': JSON.stringify(git.short()),
             '__BUILD_NUMBER__': JSON.stringify('dev'),
             '__BUILD_TAG__': JSON.stringify('dev'),
-            '__TAG__': JSON.stringify(GIT_TAG),
             '__BRANCH__': JSON.stringify(git.branch()),
             'process.env': {
               'NODE_ENV': JSON.stringify('dev'),

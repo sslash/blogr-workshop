@@ -6,8 +6,6 @@ var fs = require('fs');
 var config = require('./webpack.config');
 var git = require('git-rev-sync');
 var version = require('./package.json').version;
-var childProcess = require('child_process'),
-GIT_TAG = childProcess.execSync('git describe --exact-match || echo \"no tag found\"').toString();
 
 module.exports = Object.assign(config, {
     plugins: [

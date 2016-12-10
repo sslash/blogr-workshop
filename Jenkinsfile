@@ -231,14 +231,9 @@ def deployTo(server) {
  * @return the tagname
  */
 def tagRelease() {
-    def gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     def now = new Date().format('yyyyMMdd')
     def tagName = "r${now}+b${BUILD_NUMBER}"
-    def commitMsg = "Release ${env.BUILD_TAG} ${gitCommit}"
-
-    print now
-    print tagName
-    print commitMsg
+    def commitMsg = "Release ${env.BUILD_TAG}"
 
     sh """ git tag -fa \"${tagName}\" -m \"${commitMsg}\"
            git push -f origin refs/tags/${tagName}:refs/tags/${tagName}
