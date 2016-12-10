@@ -122,23 +122,6 @@ node() {
 
             /**
              * Deploy the distributionsfiles to the qa-servers.
-             * After this step, the same artifacts should be used and
-             * the source code been tagged so that its easy to se
-             * when running acceptance test that it is the same
-             * running code used both in tests and later in production.
-             *
-             * The reason why the version is bumped already here is
-             * that I want the last release step to be so simple,
-             * just move the files to the server. Everything else
-             * like version bumping, source code pushing and more
-             * is already done in the release to QA stage to minimize
-             * risk when deploying into production.
-             * I dont want to sit at 6am with a merge conflict on
-             * release day. :) When deployed to QA the distribution
-             * files has been finished. The gold-master dist created.
-             * No more work on the source code, or the source control
-             * needs to be done. The distribution files sits in the
-             * workspace and await acceptance testing to be completed.
              *
              */
             stage('Deploy QA') {
@@ -147,16 +130,9 @@ node() {
                     input 'Deploy to QA-servers?'
                 }
 
-                updateVersion()
-                archiveArtifacts artifacts: '*.zip', fingerprint: true
-
                 deployTo "app-3.dragon.lan"
 
-                dir('react') {
-                    newVersion = parseVersion()
-                    print "New version ${newVersion} released in qa."
-                    mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} - New version ${newVersion} released to qa-servers."
-                }
+                mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} deployed to qa-servers."
             }
 
             /**
@@ -202,11 +178,15 @@ node() {
                     }
 
                     deployTo "app-4.dragon.lan"
-                    dir('react') {
-                        newVersion = parseVersion()
-                        print "New version ${newVersion} released in production!"
-                        mattermostSend color: "good", message: "${env.JOB_NAME} - :star: Build ${env.BUILD_NUMBER} - New version ${newVersion} released to production :exclamation:"
-                    }
+
+                    // update SCM with tag so that we have
+                    // log of every release that has been done
+                    def tag = tagRelease()
+
+                    // archive the distributions files so that we have a
+                    // file archive with every release.
+                    archiveArtifacts artifacts: '*.zip', fingerprint: true
+                    mattermostSend color: "good", message: "${env.JOB_NAME} - :star: New version ${tag} deployed to production :exclamation:"
                 }else{
                     timeout(time: 0, unit: 'SECONDS') {
                         input 'Deploy to Production?'
@@ -243,34 +223,21 @@ def deployTo(server) {
     sh "ssh jenkins@${server} '/usr/sbin/service node-app start --force &> /dev/null'"
 }
 
-def updateVersion() {
-    print "Branch building: ${env.BRANCH_NAME}";
-        def VERSION = ""
-        dir('react') {
-            VERSION = sh(
-                    script: 'npm version major',
-                    returnStdout: true
-            ).trim()
-        }
-        dir('server') {
-            sh 'npm version major'
-        }
+def tagRelease() {
+    def now = new Date().format( 'yyyyMMdd' )
+    def tagName = "r${now}.${env.BUILD_NUMBER}"
+    def commitMsg = "Release branch ${env.BRANCH_NAME} (${env.BUILD_TAG})."
 
-        def branch = env.BRANCH_NAME
-        def commitMsg = "New release ${VERSION}"
-        def tagName = VERSION
-        sh """ git add . && git commit -m \"${commitMsg}\" || true
-               git push origin HEAD:refs/heads/${branch} || true
-           """
-        sh """ git tag -fa \"${tagName}\" -m \"${commitMsg}\"
-               git push -f origin refs/tags/${tagName}:refs/tags/${tagName}
-           """
+    print now
+    print tagName
+    print commitMsg
 
-        return VERSION;
-}
 
-// Parse the package.json and extract the version information.
-def parseVersion() {
-    def matcher = readFile('package.json') =~ '"version":."(.+)"'
-    matcher ? matcher[0][1] : null
+    /*
+    print "Tag release: ${env.BRANCH_NAME}";
+    sh """ git tag -fa \"${tagName}\" -m \"${commitMsg}\"
+           git push -f origin refs/tags/${tagName}:refs/tags/${tagName}
+       """
+    */
+    tagName
 }
