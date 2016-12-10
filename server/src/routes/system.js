@@ -5,8 +5,9 @@ var router = express.Router();
 const info = {
   version: __VERSION__,
   hash: __HASH__,
+  tag: __TAG__,
   build_number: __BUILD_NUMBER__,
-  build_tag: __BUILD_TAG__,
+  build_tag: __BUILD_TAG__
 }
 
 var Umzug = require('umzug');
