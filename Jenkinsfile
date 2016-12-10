@@ -233,7 +233,7 @@ def deployTo(server) {
 def tagRelease() {
     def gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
     def now = new Date().format('yyyyMMdd')
-    def tagName = "${now}+b${BUILD_NUMBER}"
+    def tagName = "r${now}+b${BUILD_NUMBER}"
     def commitMsg = "Release ${env.BUILD_TAG} ${gitCommit}"
 
     print now
