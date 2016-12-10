@@ -116,7 +116,7 @@ node() {
              */
             stage('Deploy Dev') {
                 print "Deploy to dev-servers."
-                //deployTo "app-????.dragon.lan"
+                deployTo "app-4.dragon.lan"
                 mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} deployed to dev."
             }
 
@@ -131,7 +131,6 @@ node() {
                 }
 
                 deployTo "app-3.dragon.lan"
-
                 mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} deployed to qa-servers."
             }
 
@@ -177,7 +176,8 @@ node() {
                         input 'Deploy to Production?'
                     }
 
-                    deployTo "app-4.dragon.lan"
+                    // should deploy to all prodservers.
+                    // deployTo "app-4.dragon.lan"
 
                     // update SCM with tag so that we have
                     // log of every release that has been done
