@@ -12,7 +12,6 @@ module.exports = Object.assign(config, {
         new webpack.DefinePlugin({
             '__VERSION__': JSON.stringify(version),
             '__HASH__': JSON.stringify(git.short()),
-            '__TAG__': JSON.stringify(GIT_TAG),
             '__BUILD_NUMBER__': JSON.stringify(process.env.BUILD_NUMBER),
             '__BUILD_TAG__': JSON.stringify(process.env.BUILD_TAG),
             '__BRANCH__': JSON.stringify(git.branch()),
