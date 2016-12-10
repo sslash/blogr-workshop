@@ -223,21 +223,25 @@ def deployTo(server) {
     sh "ssh jenkins@${server} '/usr/sbin/service node-app start --force &> /dev/null'"
 }
 
+/**
+ * Tag release in SCM.
+ * Example tag: 20161210+b45
+ * The tag is the date and buildnumber of the release.
+ *
+ * @return the tagname
+ */
 def tagRelease() {
-    def now = new Date().format( 'yyyyMMdd' )
-    def tagName = "r${now}.${env.BUILD_NUMBER}"
-    def commitMsg = "Release branch ${env.BRANCH_NAME} (${env.BUILD_TAG})."
+    def gitCommit = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+    def now = new Date().format('yyyyMMdd')
+    def tagName = "${now}+b${BUILD_NUMBER}"
+    def commitMsg = "Release ${env.BUILD_TAG} ${gitCommit}"
 
     print now
     print tagName
     print commitMsg
 
-
-    /*
-    print "Tag release: ${env.BRANCH_NAME}";
     sh """ git tag -fa \"${tagName}\" -m \"${commitMsg}\"
            git push -f origin refs/tags/${tagName}:refs/tags/${tagName}
        """
-    */
     tagName
 }
