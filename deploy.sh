@@ -9,4 +9,4 @@ mv /opt/blogr/latest /opt/blogr/prev
 ln -s "$(pwd)" /opt/blogr/latest
 
 # start service again
-/usr/sbin/service node-app start --force &> /dev/null
+/usr/sbin/service node-app start --force

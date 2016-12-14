@@ -95,7 +95,7 @@ node() {
                         }
                 )
 
-                zip archive: true,
+                zip archive: false,
                         glob: """deploy.sh,
                              public/**/*,
                              react/dist/*,
