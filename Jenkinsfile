@@ -199,6 +199,7 @@ node() {
 
 def deployTo(server) {
     print "Deploy to ${server}"
+    sh "ssh jenkins@${server} 'mkdir -p /opt/blogr/upload/${env.BUILD_NUMBER}'"
     sh "rsync -aR blogr.zip jenkins@${server}:/opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip"
     sh "ssh jenkins@${server} 'unzip -q /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip'"
     sh "ssh jenkins@${server} 'rm -rf /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip'"
