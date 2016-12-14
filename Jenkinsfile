@@ -86,9 +86,6 @@ node() {
                         npm_build_server: {
                             dir('server') {
                                 sh 'npm run build'
-
-                                sh 'cp -r node_modules dist'
-                                sh 'cp -r migrations dist'
                             }
                         },
                         npm_build_react: {
@@ -99,15 +96,15 @@ node() {
                 )
 
                 zip archive: true,
-                    glob: """deploy.sh,
+                        glob: """deploy.sh,
                              public/**/*,
                              react/dist/*,
                              server/node_modules/**/*,
                              server/dist/*,
                              server/migrations/*
                           """,
-                    zipFile: 'blogr.zip'
-           }
+                        zipFile: 'blogr.zip'
+            }
 
             /**
              * Deploy the distributionsfiles to the dev-servers.
