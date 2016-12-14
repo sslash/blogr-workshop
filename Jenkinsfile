@@ -201,7 +201,7 @@ def deployTo(server) {
     print "Deploy to ${server}"
     sh "ssh jenkins@${server} 'mkdir -p /opt/blogr/upload/${env.BUILD_NUMBER}'"
     sh "rsync -aR blogr.zip jenkins@${server}:/opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip"
-    sh "ssh jenkins@${server} 'unzip -o -q /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip /opt/blogr/upload/${env.BUILD_NUMBER}'"
+    sh "ssh jenkins@${server} 'unzip -o -q /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip -d /opt/blogr/upload/${env.BUILD_NUMBER}'"
     sh "ssh jenkins@${server} 'rm -rf /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip'"
     sh "ssh jenkins@${server} 'cd /opt/blogr/upload/${env.BUILD_NUMBER} && sh ./deploy.sh'"
 }
