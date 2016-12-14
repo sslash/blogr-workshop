@@ -17,8 +17,8 @@ node() {
              */
             stage('Prepare') {
                 print "Prepare for building"
-                sh 'git config --global user.name "Jenkins"'
-                sh 'git config --global user.email jenkins@dragon.lan'
+                sh 'git config user.name "Jenkins"'
+                sh 'git config user.email jenkins@dragon.lan'
 
                 sh 'rm -f *.zip'
                 dir('server') {
@@ -98,18 +98,16 @@ node() {
                         }
                 )
 
-                parallel(
-                        zip_public: {
-                            zip archive: false, dir: 'public', glob: '**', zipFile: 'public.zip'
-                        },
-                        zip_client: {
-                            zip archive: false, dir: 'react/dist', glob: '**', zipFile: 'client.zip'
-                        },
-                        zip_server: {
-                            zip archive: false, dir: 'server/dist', glob: '**', zipFile: 'server.zip'
-                        }
-                )
-            }
+                zip archive: true,
+                    glob: """deploy.sh,
+                             public/**/*,
+                             react/dist/*,
+                             server/node_modules/**/*,
+                             server/dist/*,
+                             server/migrations/*
+                          """,
+                    zipFile: 'blogr.zip'
+           }
 
             /**
              * Deploy the distributionsfiles to the dev-servers.
@@ -187,7 +185,7 @@ node() {
                     // file archive with every release.
                     archiveArtifacts artifacts: '*.zip', fingerprint: true
                     mattermostSend color: "good", message: "${env.JOB_NAME} - :star: New version ${tag} deployed to production :exclamation:"
-                }else{
+                } else {
                     timeout(time: 0, unit: 'SECONDS') {
                         input 'Deploy to Production?'
                     }
@@ -204,23 +202,10 @@ node() {
 
 def deployTo(server) {
     print "Deploy to ${server}"
-    sh "ssh jenkins@${server} '/usr/sbin/service node-app stop --force'"
-    sh "ssh jenkins@${server} 'mkdir -p /opt/blogr/upload/${env.BUILD_NUMBER}'"
-    sh "rsync -r server.zip jenkins@${server}:/opt/blogr/upload/${env.BUILD_NUMBER}/server.zip"
-    sh "rsync -r client.zip jenkins@${server}:/opt/blogr/upload/${env.BUILD_NUMBER}/client.zip"
-    sh "rsync -r public.zip jenkins@${server}:/opt/blogr/upload/${env.BUILD_NUMBER}/public.zip"
-
-    sh "ssh jenkins@${server} 'unzip -q /opt/blogr/upload/${env.BUILD_NUMBER}'/server.zip -d /opt/blogr/upload/${env.BUILD_NUMBER}/server"
-    sh "ssh jenkins@${server} 'unzip -q /opt/blogr/upload/${env.BUILD_NUMBER}'/public.zip -d /opt/blogr/upload/${env.BUILD_NUMBER}/public"
-    sh "ssh jenkins@${server} 'unzip -q /opt/blogr/upload/${env.BUILD_NUMBER}'/client.zip -d /opt/blogr/upload/${env.BUILD_NUMBER}/public"
-
-    sh "ssh jenkins@${server} 'realpath /opt/blogr/prev | xargs rm -rf'"
-    sh "ssh jenkins@${server} 'rm /opt/blogr/prev'"
-    sh "ssh jenkins@${server} 'mv /opt/blogr/latest /opt/blogr/prev'"
-    sh "ssh jenkins@${server} 'ln -s /opt/blogr/upload/${env.BUILD_NUMBER} /opt/blogr/latest'"
-
-    sh "ssh jenkins@${server} 'rm /opt/blogr/upload/${env.BUILD_NUMBER}'/*.zip"
-    sh "ssh jenkins@${server} '/usr/sbin/service node-app start --force &> /dev/null'"
+    sh "rsync -aR blogr.zip jenkins@${server}:/opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip"
+    sh "ssh jenkins@${server} 'unzip -q /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip'"
+    sh "ssh jenkins@${server} 'rm -rf /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip'"
+    sh "ssh jenkins@${server} 'cd /opt/blogr/upload/${env.BUILD_NUMBER} && sh deploy.sh'"
 }
 
 /**

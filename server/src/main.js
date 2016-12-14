@@ -30,6 +30,7 @@ app.use(methodOverride());
 app.use(cookieParser());
 
 app.use('/', express.static('../public'));
+app.use('/js', express.static('../react'));
 app.use('/api', posts);
 app.use('/api', system);
 
