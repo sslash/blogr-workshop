@@ -17,9 +17,6 @@ node() {
              */
             stage('Prepare') {
                 print "Prepare for building"
-                sh 'git config user.name "Jenkins"'
-                sh 'git config user.email jenkins@dragon.lan'
-
                 sh 'rm -f *.zip'
                 dir('server') {
                     sh 'rm -rf dist/*'
