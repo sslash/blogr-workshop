@@ -111,7 +111,7 @@ node() {
              */
             stage('Deploy Dev') {
                 print "Deploy to dev-servers."
-                deployTo "app-4.dragon.lan"
+                deployTo "d-app-01.dragon.lan"
                 mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} deployed to dev."
             }
 
@@ -125,7 +125,8 @@ node() {
                     input 'Deploy to QA-servers?'
                 }
 
-                deployTo "app-3.dragon.lan"
+                deployTo "t-app-01.dragon.lan"
+                deployTo "t-app-02.dragon.lan"
                 mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} deployed to qa-servers."
             }
 
@@ -144,8 +145,8 @@ node() {
                 // Run Live end-to-end tests to the backend API.
                 dir('server') {
                     print "Verify server API"
-                    sh 'API_URL=http://app-3.dragon.lan:3000 npm run e2e'
-                    sh 'API_URL=http://app-4.dragon.lan:3000 npm run e2e'
+                    sh 'API_URL=http://t-app-01.dragon.lan:3000 npm run e2e'
+                    sh 'API_URL=http://t-app-02.dragon.lan:3000 npm run e2e'
 
                     // save test results
                     junit 'test-results.xml'
@@ -154,8 +155,8 @@ node() {
                 // Run Live selenium tests to the frontend.
                 dir('react') {
                     print "Verify react frontend."
-                    sh 'npm run e2e  -- --baseUrl http://app-3.dragon.lan:3000'
-                    sh 'npm run e2e  -- --baseUrl http://app-4.dragon.lan:3000'
+                    sh 'npm run e2e  -- --baseUrl http://t-app-01.dragon.lan:3000'
+                    sh 'npm run e2e  -- --baseUrl http://t-app-02.dragon.lan:3000'
                 }
             }
 
@@ -172,7 +173,10 @@ node() {
                     }
 
                     // should deploy to all prodservers.
-                    // deployTo "app-4.dragon.lan"
+                    deployTo "p-app-01.dragon.lan"
+                    deployTo "p-app-02.dragon.lan"
+                    deployTo "p-app-03.dragon.lan"
+                    deployTo "p-app-04.dragon.lan"
 
                     // update SCM with tag so that we have
                     // log of every release that has been done
