@@ -201,10 +201,10 @@ node() {
 def deployTo(server) {
     print "Deploy to ${server}"
     sh "ssh -o StrictHostKeyChecking=no jenkins@${server} 'mkdir -p /opt/blogr/upload/${env.BUILD_NUMBER}'"
-    sh "rsync -e \"ssh -o StrictHostKeyChecking=no\" -aR blogr.zip jenkins@${server}:/opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip"
-    sh "ssh -o StrictHostKeyChecking=no jenkins@${server} 'unzip -o -q /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip -d /opt/blogr/upload/${env.BUILD_NUMBER}'"
-    sh "ssh -o StrictHostKeyChecking=no jenkins@${server} 'rm -rf /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip'"
-    sh "ssh -o StrictHostKeyChecking=no jenkins@${server} 'cd /opt/blogr/upload/${env.BUILD_NUMBER} && sh ./deploy.sh &> /dev/null'"
+    sh "scp blogr.zip jenkins@${server}:/opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip"
+    sh "ssh jenkins@${server} 'unzip -o -q /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip -d /opt/blogr/upload/${env.BUILD_NUMBER}'"
+    sh "ssh jenkins@${server} 'rm -rf /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip'"
+    sh "ssh jenkins@${server} 'cd /opt/blogr/upload/${env.BUILD_NUMBER} && sh ./deploy.sh &> /dev/null'"
 }
 
 /**
