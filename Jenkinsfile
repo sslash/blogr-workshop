@@ -128,36 +128,6 @@ node() {
             }
 
             /**
-             * Verify the deployment.
-             * Perform the acceptance test, automated and manually.
-             * If the release is accepted then perform release into
-             * production.
-             *
-             * Automated End-To-End tests are done running against
-             * the QA-servers.
-             */
-            stage('Verify') {
-                print "Verify that the build is working"
-
-                // Run Live end-to-end tests to the backend API.
-                dir('server') {
-                    print "Verify server API"
-                    sh 'API_URL=http://t-app-01.dragon.lan:3000 npm run e2e'
-                    sh 'API_URL=http://t-app-02.dragon.lan:3000 npm run e2e'
-
-                    // save test results
-                    junit 'test-results.xml'
-                }
-
-                // Run Live selenium tests to the frontend.
-                dir('react') {
-                    print "Verify react frontend."
-                    sh 'npm run e2e  -- --baseUrl http://t-app-01.dragon.lan:3000'
-                    sh 'npm run e2e  -- --baseUrl http://t-app-02.dragon.lan:3000'
-                }
-            }
-
-            /**
              * Deploy distribution to production.
              * This is a very simple stage, if on master
              * and accept deploy to production, just copy the files to the servers.
@@ -177,7 +147,7 @@ node() {
 
                     // update SCM with tag so that we have
                     // log of every release that has been done
-                    def tag = tagRelease()
+//                    def tag = tagRelease()
 
                     // archive the distributions files so that we have a
                     // file archive with every release.
@@ -198,6 +168,15 @@ node() {
     }
 }
 
+/**
+ * Verify the deployment.
+ * Perform the acceptance test, automated and manually.
+ * If the release is accepted then perform release into
+ * production.
+ *
+ * Automated End-To-End tests are done running against
+ * the QA-servers.
+ */
 def deployTo(server) {
     print "Deploy to ${server}"
     sh "ssh -o StrictHostKeyChecking=no jenkins@${server} 'mkdir -p /opt/blogr/upload/${env.BUILD_NUMBER}'"
@@ -205,22 +184,21 @@ def deployTo(server) {
     sh "ssh jenkins@${server} 'unzip -o -q /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip -d /opt/blogr/upload/${env.BUILD_NUMBER}'"
     sh "ssh jenkins@${server} 'rm -rf /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip'"
     sh "ssh jenkins@${server} 'cd /opt/blogr/upload/${env.BUILD_NUMBER} && sh ./deploy.sh &> /dev/null'"
+    
+    // check that app is running after deploy
+    verifyDeploy(server)
 }
 
-/**
- * Tag release in SCM.
- * Example tag: 20161210+b45
- * The tag is the date and buildnumber of the release.
- *
- * @return the tagname
- */
-def tagRelease() {
-    def now = new Date().format('yyyyMMdd')
-    def tagName = "r${now}+b${BUILD_NUMBER}"
-    def commitMsg = "Release ${env.BUILD_TAG}"
+def verifyDeploy(server){ 
+    // Run Live end-to-end tests to the backend API.
+    dir('server') {
+        print "Verify server API"
+        sh "API_URL=http://${server}:3000 npm run e2e"
+    }
 
-    sh """ git tag -fa \"${tagName}\" -m \"${commitMsg}\"
-           git push -f origin refs/tags/${tagName}:refs/tags/${tagName}
-       """
-    tagName
+    // Run Live selenium tests to the frontend.
+    dir('react') {
+        print "Verify react frontend."
+        sh "npm run e2e  -- --baseUrl http://${server}:3000"
+    }
 }
