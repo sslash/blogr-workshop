@@ -152,7 +152,7 @@ node() {
                     // archive the distributions files so that we have a
                     // file archive with every release.
                     archiveArtifacts artifacts: '*.zip', fingerprint: true
-                    mattermostSend color: "good", message: "${env.JOB_NAME} - :star: New version ${tag} deployed to production :exclamation:"
+                   // mattermostSend color: "good", message: "${env.JOB_NAME} - :star: New version ${tag} deployed to production :exclamation:"
                 } else {
                     timeout(time: 0, unit: 'SECONDS') {
                         input 'Deploy to Production?'
