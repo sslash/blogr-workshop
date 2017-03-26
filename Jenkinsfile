@@ -186,7 +186,7 @@ def deployTo(server) {
     sh "ssh jenkins@${server} 'cd /opt/blogr/upload/${env.BUILD_NUMBER} && sh ./deploy.sh &> /dev/null'"
     
     // check that app is running after deploy
-    verifyDeploy(server)
+    // verifyDeploy(server)
 }
 
 def verifyDeploy(server){ 
