@@ -5,7 +5,7 @@ var Sequelize = require("sequelize");
 var sequelizeInstance = new Sequelize(config.db.user, config.db.user, config.db.password, {
     dialect: 'postgres',
     logging: debug,
-    host: "db-2.dragon.lan",
+    host: config.db.host,
     port: 5432
 });
 
