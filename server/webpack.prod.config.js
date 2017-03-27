@@ -14,11 +14,7 @@ module.exports = Object.assign(config, {
             '__HASH__': JSON.stringify(git.short()),
             '__BUILD_NUMBER__': JSON.stringify(process.env.BUILD_NUMBER),
             '__BUILD_TAG__': JSON.stringify(process.env.BUILD_TAG),
-            '__BRANCH__': JSON.stringify(git.branch()),
-            'process.env': {
-              'NODE_ENV': JSON.stringify('production'),
-              'BABEL_ENV': JSON.stringify('production')
-            }
+            '__BRANCH__': JSON.stringify(git.branch())
         })
     ]
 });

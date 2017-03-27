@@ -1,6 +1,10 @@
 /**
  * Module dependencies.
  */
+console.log("Start server in env.");
+console.log("NODE_ENV", process.env.NODE_ENV)
+console.log("BABEL_ENV", process.env.BABEL_ENV)
+
 var app = require('./src/main');
 var debug = require('debug')('server');
 var http = require('http');

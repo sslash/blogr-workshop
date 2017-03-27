@@ -47,11 +47,7 @@ module.exports = {
             '__HASH__': JSON.stringify(git.short()),
             '__BUILD_NUMBER__': JSON.stringify('dev'),
             '__BUILD_TAG__': JSON.stringify('dev'),
-            '__BRANCH__': JSON.stringify(git.branch()),
-            'process.env': {
-              'NODE_ENV': JSON.stringify('dev'),
-              'BABEL_ENV': JSON.stringify('dev')
-            }
+            '__BRANCH__': JSON.stringify(git.branch())
         })
     ]
 };
