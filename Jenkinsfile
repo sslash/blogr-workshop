@@ -204,8 +204,8 @@ def verifyDeploy(server) {
  * Update all nodes running service for env.
  * @param env to update
  */
-def deployApp(env) {
-    def services = findServices(env)
+def deployApp(environment) {
+    def services = findServices(environment)
     for (service in services) {
         deployTo service.Address
         mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} deployed to ${service.Node}."
@@ -216,8 +216,8 @@ def deployApp(env) {
  * Retrieve Nodes from Consul HTTP API.
  * https://www.consul.io/docs/agent/http.html
  */
-def findServices(env) {
-    def response = httpRequest "http://consul.service.consul:8500/v1/catalog/service/app?tag=${env}"
+def findServices(environment) {
+    def response = httpRequest "http://consul.service.consul:8500/v1/catalog/service/app?tag=${environment}"
     return parseJsonText(response.content)
 }
 
