@@ -108,8 +108,7 @@ node() {
              */
             stage('Deploy Dev') {
                 print "Deploy to dev-servers."
-                deployTo "d-app-01.dragon.lan"
-                mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} deployed to dev."
+                deployApp "development"
             }
 
             /**
@@ -122,9 +121,7 @@ node() {
                     input 'Deploy to QA-servers?'
                 }
 
-                deployTo "t-app-01.dragon.lan"
-                deployTo "t-app-02.dragon.lan"
-                mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} deployed to qa-servers."
+                deployApp "test"
             }
 
             /**
@@ -140,10 +137,7 @@ node() {
                     }
 
                     // should deploy to all prodservers.
-                    deployTo "p-app-01.dragon.lan"
-                    deployTo "p-app-02.dragon.lan"
-                    deployTo "p-app-03.dragon.lan"
-                    deployTo "p-app-04.dragon.lan"
+                    deployApp "production"
 
                     // update SCM with tag so that we have
                     // log of every release that has been done
@@ -152,11 +146,9 @@ node() {
                     // archive the distributions files so that we have a
                     // file archive with every release.
                     archiveArtifacts artifacts: '*.zip', fingerprint: true
-                   // mattermostSend color: "good", message: "${env.JOB_NAME} - :star: New version ${tag} deployed to production :exclamation:"
+                    mattermostSend color: "good", message: "${env.JOB_NAME} - :star: New version ??? deployed to production :exclamation:"
                 } else {
-                    timeout(time: 0, unit: 'SECONDS') {
-                        input 'Deploy to Production?'
-                    }
+                    exit 0
                 }
             }
         } catch (err) {
@@ -184,12 +176,17 @@ def deployTo(server) {
     sh "ssh jenkins@${server} 'unzip -o -q /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip -d /opt/blogr/upload/${env.BUILD_NUMBER}'"
     sh "ssh jenkins@${server} 'rm -rf /opt/blogr/upload/${env.BUILD_NUMBER}/blogr.zip'"
     sh "ssh jenkins@${server} 'cd /opt/blogr/upload/${env.BUILD_NUMBER} && sh ./deploy.sh &> /dev/null'"
-    
+
     // check that app is running after deploy
     // verifyDeploy(server)
 }
 
-def verifyDeploy(server){ 
+/**
+ * Run End-To-End tests so that we can see that the deployment actually worked.
+ * @param server
+ * @return
+ */
+def verifyDeploy(server) {
     // Run Live end-to-end tests to the backend API.
     dir('server') {
         print "Verify server API"
@@ -201,4 +198,36 @@ def verifyDeploy(server){
         print "Verify react frontend."
         sh "npm run e2e  -- --baseUrl http://${server}:3000"
     }
+}
+
+/**
+ * Update all nodes running service for env.
+ * @param env to update
+ */
+def deployApp(env) {
+    def services = findServices(env)
+    for (service in services) {
+        deployTo service.Address
+        mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} deployed to ${service.Node}."
+    }
+}
+
+/**
+ * Retrieve Nodes from Consul HTTP API.
+ * https://www.consul.io/docs/agent/http.html
+ */
+def findServices(env) {
+    def response = httpRequest "http://consul.service.consul:8500/v1/catalog/service/app?tag=${env}"
+    return parseJsonText(response.content)
+}
+
+/**
+ * Use serializable version of JsonSlurper that
+ * use response objects that are serializable.
+ * @param json text
+ * @return json objects
+ */
+@NonCPS
+def parseJsonText(json) {
+    new groovy.json.JsonSlurperClassic().parseText(json)
 }
