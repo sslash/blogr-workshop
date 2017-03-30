@@ -161,6 +161,20 @@ node() {
 }
 
 /**
+ * Update all nodes running service for env.
+ * @param env to update
+ */
+def deployApp(environment) {
+    def services = findServices(environment)
+    for (service in services) {
+        def hostname = sh script: "/usr/bin/dig +short -x ${service.Address}", returnStdout: true
+        deployTo service.Address
+        mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} " +
+                "${service.ServiceName} deployed to ${hostname}"
+    }
+}
+
+/**
  * Verify the deployment.
  * Perform the acceptance test, automated and manually.
  * If the release is accepted then perform release into
@@ -197,18 +211,6 @@ def verifyDeploy(server) {
     dir('react') {
         print "Verify react frontend."
         sh "npm run e2e  -- --baseUrl http://${server}:3000"
-    }
-}
-
-/**
- * Update all nodes running service for env.
- * @param env to update
- */
-def deployApp(environment) {
-    def services = findServices(environment)
-    for (service in services) {
-        deployTo service.Address
-        mattermostSend color: "good", message: "${env.JOB_NAME} - Build ${env.BUILD_NUMBER} deployed to ${service.Node}."
     }
 }
 
