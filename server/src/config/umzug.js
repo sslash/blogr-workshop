@@ -6,7 +6,7 @@ var sequelizeInstance = new Sequelize(config.db.user, config.db.user, config.db.
     dialect: 'postgres',
     logging: debug,
     host: config.db.host,
-    port: 5432
+    port: config.db.port
 });
 
 module.exports = {
