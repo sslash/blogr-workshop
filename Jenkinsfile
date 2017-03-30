@@ -201,6 +201,7 @@ def deployTo(server) {
  * @return
  */
 def verifyDeploy(server) {
+    sleep 2
     // Run Live end-to-end tests to the backend API.
     dir('server') {
         print "Verify server API"
