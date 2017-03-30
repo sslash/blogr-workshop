@@ -202,17 +202,23 @@ def deployTo(server) {
  */
 def verifyDeploy(server) {
     sleep 1 // some sleep to let nodejs start after deploy.
-    // Run Live end-to-end tests to the backend API.
-    dir('server') {
-        print "Verify server API"
-        sh "API_URL=http://${server}:3000 npm run e2e"
-    }
 
-    // Run Live selenium tests to the frontend.
-    dir('react') {
-        print "Verify react frontend."
-        sh "npm run e2e  -- --baseUrl http://${server}:3000"
-    }
+    parallel(
+            e2e_backend_tests: {
+                // Run Live end-to-end tests to the backend API.
+                dir('server') {
+                    print "Verify server API"
+                    sh "API_URL=http://${server}:3000 npm run e2e"
+                }
+            },
+            e2e_frontend_tests: {
+                // Run Live selenium tests to the frontend.
+                dir('react') {
+                    print "Verify react frontend."
+                    sh "npm run e2e  -- --baseUrl http://${server}:3000"
+                }
+            }
+    )
 }
 
 /**
