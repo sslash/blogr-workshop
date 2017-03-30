@@ -201,7 +201,7 @@ def deployTo(server) {
  * @return
  */
 def verifyDeploy(server) {
-    sleep 2
+    sleep 1 // some sleep to let nodejs start after deploy.
     // Run Live end-to-end tests to the backend API.
     dir('server') {
         print "Verify server API"
